@@ -11,38 +11,38 @@ func New() *js.Object {
 	return js.MakeWrapper(&Ship{})
 }
 
-func cycle(ks *KeyboardState, ship *Ship) func() {
+func cycle(ks *KeyboardState, canvas *Canvas) func() {
 	return func() {
 		if(ks.up) {
-			ship.velocity = ship.velocity + 0.25
+			canvas.ship.velocity = ship.velocity + 0.25
 		}
 
 		if(ks.down) {
-			ship.velocity = ship.velocity - 0.25
+			canvas.ship.velocity = ship.velocity - 0.25
 		}
 
 		if(ks.left) {
-			ship.rotationalSpeed = ship.rotationalSpeed - 0.005
+			canvas.ship.rotationalSpeed = ship.rotationalSpeed - 0.005
 		}
 
 		if(ks.right) {
-			ship.rotationalSpeed = ship.rotationalSpeed + 0.005
+			canvas.ship.rotationalSpeed = ship.rotationalSpeed + 0.005
 		}
 		
 
-		if(ship.rotationalSpeed != 0) {
-			ship.rotation = ship.rotation + ship.rotationalSpeed;
+		if(canvas.ship.rotationalSpeed != 0) {
+			canvas.ship.rotation = ship.rotation + ship.rotationalSpeed;
 		}
 		
-		if(ship.velocity != 0) {
+		if(canvas.ship.velocity != 0) {
 			oposite := math.Sin(ship.rotation) * ship.velocity
 			adjacent := math.Cos(ship.rotation) * ship.velocity
-			ship.y = ship.y - adjacent
-			ship.x = ship.x + oposite
+			canvas.ship.y = ship.y - adjacent
+			canvas.ship.x = ship.x + oposite
 
 		}
 
-		ship.Draw()
+		canvas.Draw()
 	}
 }
 
@@ -58,10 +58,11 @@ func Initialize(e dom.Event) {
 	keyboardState := KeyboardState{};
 	dom.GetWindow().Document().AddEventListener("keydown", true, keyboardState.handleKeyDown)
 	dom.GetWindow().Document().AddEventListener("keyup", true, keyboardState.handleKeyUp)
-	canvas := dom.GetWindow().Document().GetElementByID("game-canvas").(*dom.HTMLCanvasElement)
-	ctx := canvas.GetContext2d()
+	domCanvas := dom.GetWindow().Document().GetElementByID("game-canvas").(*dom.HTMLCanvasElement)
+	ctx := domCanvas.GetContext2d()
 	ship := Ship{ctx: ctx}
+	canvas := Canvas{ctx: ctx, ship: ship}
 	ship.Initialize();
 	
-	dom.GetWindow().SetInterval(cycle(&keyboardState, &ship), 50);
+	dom.GetWindow().SetInterval(cycle(&keyboardState, &canvas), 50);
 }
