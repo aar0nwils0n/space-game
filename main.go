@@ -32,17 +32,17 @@ func cycle(ks *KeyboardState, ship *Ship) func() {
 
 		if(ship.rotationalSpeed != 0) {
 			ship.rotation = ship.rotation + ship.rotationalSpeed;
-			ship.setRotation()
 		}
 		
 		if(ship.velocity != 0) {
 			oposite := math.Sin(ship.rotation) * ship.velocity
-			adjecent := math.Cos(ship.rotation) * ship.velocity
-			ship.y = ship.y - oposite
-			ship.x = ship.x - adjecent
+			adjacent := math.Cos(ship.rotation) * ship.velocity
+			ship.y = ship.y - adjacent
+			ship.x = ship.x + oposite
 
-			ship.SetPosition()
 		}
+
+		ship.Draw()
 	}
 }
 
@@ -58,7 +58,7 @@ func Initialize(e dom.Event) {
 	keyboardState := KeyboardState{};
 	dom.GetWindow().Document().AddEventListener("keydown", true, keyboardState.handleKeyDown)
 	dom.GetWindow().Document().AddEventListener("keyup", true, keyboardState.handleKeyUp)
-	canvas := dom.GetWindow().Document().GetElementByID("game-canvas").(dom.HTMLCanvasElement)
+	canvas := dom.GetWindow().Document().GetElementByID("game-canvas").(*dom.HTMLCanvasElement)
 	ctx := canvas.GetContext2d()
 	ship := Ship{ctx: ctx}
 	ship.Initialize();

@@ -3411,12 +3411,22 @@ $packages["io"] = (function() {
 	return $pkg;
 })();
 $packages["math"] = (function() {
-	var $pkg = {}, $init, js, arrayType, arrayType$1, arrayType$2, structType, math, buf, init, Float32bits, Float64bits;
+	var $pkg = {}, $init, js, arrayType, arrayType$1, arrayType$2, structType, math, buf, Cos, Sin, init, Float32bits, Float64bits;
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	arrayType = $arrayType($Uint32, 2);
 	arrayType$1 = $arrayType($Float32, 2);
 	arrayType$2 = $arrayType($Float64, 1);
 	structType = $structType("math", [{prop: "uint32array", name: "uint32array", anonymous: false, exported: false, typ: arrayType, tag: ""}, {prop: "float32array", name: "float32array", anonymous: false, exported: false, typ: arrayType$1, tag: ""}, {prop: "float64array", name: "float64array", anonymous: false, exported: false, typ: arrayType$2, tag: ""}]);
+	Cos = function(x) {
+		var x;
+		return $parseFloat(math.cos(x));
+	};
+	$pkg.Cos = Cos;
+	Sin = function(x) {
+		var x;
+		return $parseFloat(math.sin(x));
+	};
+	$pkg.Sin = Sin;
 	init = function() {
 		var ab;
 		ab = new ($global.ArrayBuffer)(8);
@@ -10567,7 +10577,7 @@ $packages["unicode/utf8"] = (function() {
 	return $pkg;
 })();
 $packages["strconv"] = (function() {
-	var $pkg = {}, $init, errors, math, utf8, decimal, leftCheat, extFloat, floatInfo, decimalSlice, sliceType$3, sliceType$4, sliceType$5, arrayType, sliceType$6, arrayType$1, arrayType$2, ptrType$1, arrayType$3, arrayType$4, ptrType$2, ptrType$3, ptrType$4, optimize, leftcheats, smallPowersOfTen, powersOfTen, uint64pow10, float32info, float32info$24ptr, float64info, float64info$24ptr, isPrint16, isNotPrint16, isPrint32, isNotPrint32, isGraphic, shifts, digitZero, trim, rightShift, prefixIsLessThan, leftShift, shouldRoundUp, frexp10Many, adjustLastDigitFixed, adjustLastDigit, FormatFloat, AppendFloat, genericFtoa, bigFtoa, formatDigits, roundShortest, fmtE, fmtF, fmtB, min, max, FormatInt, Itoa, small, formatBits, appendQuotedWith, appendQuotedRuneWith, appendEscapedRune, AppendQuote, AppendQuoteToASCII, AppendQuoteRune, AppendQuoteRuneToASCII, CanBackquote, unhex, UnquoteChar, Unquote, contains, bsearch16, bsearch32, IsPrint, isInGraphicList;
+	var $pkg = {}, $init, errors, math, utf8, decimal, leftCheat, extFloat, floatInfo, decimalSlice, sliceType$3, sliceType$4, sliceType$5, arrayType, sliceType$6, arrayType$1, arrayType$2, ptrType$1, arrayType$3, arrayType$4, ptrType$2, ptrType$3, ptrType$4, optimize, leftcheats, smallPowersOfTen, powersOfTen, uint64pow10, float32info, float32info$24ptr, float64info, float64info$24ptr, isPrint16, isNotPrint16, isPrint32, isNotPrint32, isGraphic, shifts, digitZero, trim, rightShift, prefixIsLessThan, leftShift, shouldRoundUp, frexp10Many, adjustLastDigitFixed, adjustLastDigit, AppendFloat, genericFtoa, bigFtoa, formatDigits, roundShortest, fmtE, fmtF, fmtB, min, max, FormatInt, Itoa, small, formatBits, appendQuotedWith, appendQuotedRuneWith, appendEscapedRune, AppendQuote, AppendQuoteToASCII, AppendQuoteRune, AppendQuoteRuneToASCII, CanBackquote, unhex, UnquoteChar, Unquote, contains, bsearch16, bsearch32, IsPrint, isInGraphicList;
 	errors = $packages["errors"];
 	math = $packages["math"];
 	utf8 = $packages["unicode/utf8"];
@@ -11378,11 +11388,6 @@ $packages["strconv"] = (function() {
 		}
 		return true;
 	};
-	FormatFloat = function(f, fmt, prec, bitSize) {
-		var bitSize, f, fmt, prec;
-		return ($bytesToString(genericFtoa($makeSlice(sliceType$6, 0, max(prec + 4 >> 0, 24)), f, fmt, prec, bitSize)));
-	};
-	$pkg.FormatFloat = FormatFloat;
 	AppendFloat = function(dst, f, fmt, prec, bitSize) {
 		var bitSize, dst, f, fmt, prec;
 		return genericFtoa(dst, f, fmt, prec, bitSize);
@@ -23323,31 +23328,12 @@ $packages["honnef.co/go/js/dom"] = (function() {
 	return $pkg;
 })();
 $packages["space-ship"] = (function() {
-	var $pkg = {}, $init, fmt, js, dom, strconv, Ship, KeyboardState, ptrType, sliceType, ptrType$1, funcType, mapType, ptrType$2, ptrType$3, New, cycle, main, Initialize;
+	var $pkg = {}, $init, fmt, js, dom, math, strconv, KeyboardState, Ship, ptrType, sliceType, ptrType$1, ptrType$2, funcType, mapType, ptrType$3, funcType$1, ptrType$4, ptrType$5, New, cycle, main, Initialize;
 	fmt = $packages["fmt"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	dom = $packages["honnef.co/go/js/dom"];
+	math = $packages["math"];
 	strconv = $packages["strconv"];
-	Ship = $pkg.Ship = $newType(0, $kindStruct, "main.Ship", true, "space-ship", true, function(element_, velocity_, x_, y_, direction_, rotationalSpeed_, rotation_) {
-		this.$val = this;
-		if (arguments.length === 0) {
-			this.element = $ifaceNil;
-			this.velocity = 0;
-			this.x = 0;
-			this.y = 0;
-			this.direction = 0;
-			this.rotationalSpeed = 0;
-			this.rotation = 0;
-			return;
-		}
-		this.element = element_;
-		this.velocity = velocity_;
-		this.x = x_;
-		this.y = y_;
-		this.direction = direction_;
-		this.rotationalSpeed = rotationalSpeed_;
-		this.rotation = rotation_;
-	});
 	KeyboardState = $pkg.KeyboardState = $newType(0, $kindStruct, "main.KeyboardState", true, "space-ship", true, function(up_, down_, left_, right_) {
 		this.$val = this;
 		if (arguments.length === 0) {
@@ -23362,58 +23348,42 @@ $packages["space-ship"] = (function() {
 		this.left = left_;
 		this.right = right_;
 	});
+	Ship = $pkg.Ship = $newType(0, $kindStruct, "main.Ship", true, "space-ship", true, function(element_, velocity_, x_, y_, direction_, rotationalSpeed_, rotation_, link_, img_, ctx_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.element = $ifaceNil;
+			this.velocity = 0;
+			this.x = 0;
+			this.y = 0;
+			this.direction = 0;
+			this.rotationalSpeed = 0;
+			this.rotation = 0;
+			this.link = "";
+			this.img = null;
+			this.ctx = ptrType$1.nil;
+			return;
+		}
+		this.element = element_;
+		this.velocity = velocity_;
+		this.x = x_;
+		this.y = y_;
+		this.direction = direction_;
+		this.rotationalSpeed = rotationalSpeed_;
+		this.rotation = rotation_;
+		this.link = link_;
+		this.img = img_;
+		this.ctx = ctx_;
+	});
 	ptrType = $ptrType(dom.KeyboardEvent);
 	sliceType = $sliceType($emptyInterface);
-	ptrType$1 = $ptrType(js.Object);
-	funcType = $funcType([], [ptrType$1], false);
+	ptrType$1 = $ptrType(dom.CanvasRenderingContext2D);
+	ptrType$2 = $ptrType(js.Object);
+	funcType = $funcType([], [ptrType$2], false);
 	mapType = $mapType($String, $emptyInterface);
-	ptrType$2 = $ptrType(Ship);
-	ptrType$3 = $ptrType(KeyboardState);
-	New = function() {
-		return js.MakeWrapper(new Ship.ptr($ifaceNil, 0, 0, 0, 0, 0, 0));
-	};
-	$pkg.New = New;
-	Ship.ptr.prototype.SetPosition = function() {
-		var _r, _r$1, htmlEl, s, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; htmlEl = $f.htmlEl; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		s = this;
-		htmlEl = $assertType(s.element, dom.HTMLElement);
-		_r = htmlEl.Style(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		$r = _r.SetProperty("left", strconv.FormatFloat(s.x, 69, -1, 64) + "px", ""); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$1 = htmlEl.Style(); /* */ $s = 3; case 3: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		$r = _r$1.SetProperty("top", strconv.FormatFloat(s.y, 69, -1, 64) + "px", ""); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Ship.ptr.prototype.SetPosition }; } $f._r = _r; $f._r$1 = _r$1; $f.htmlEl = htmlEl; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	Ship.prototype.SetPosition = function() { return this.$val.SetPosition(); };
-	Ship.ptr.prototype.Initialize = function() {
-		var _r, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, htmlEl, s, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; htmlEl = $f.htmlEl; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		s = this;
-		_r = dom.GetWindow().Document(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		_r$1 = _r.CreateElement("div"); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		s.element = _r$1;
-		_r$2 = dom.GetWindow().Document(); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-		_r$3 = _r$2.QuerySelector("body"); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-		$r = _r$3.AppendChild(s.element); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$4 = s.element.Class(); /* */ $s = 6; case 6: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
-		$r = _r$4.SetString("ship"); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		htmlEl = $assertType(s.element, dom.HTMLElement);
-		_r$5 = htmlEl.Style(); /* */ $s = 8; case 8: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
-		$r = _r$5.SetProperty("background", "red", ""); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$6 = htmlEl.Style(); /* */ $s = 10; case 10: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
-		$r = _r$6.SetProperty("width", "20px", ""); /* */ $s = 11; case 11: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$7 = htmlEl.Style(); /* */ $s = 12; case 12: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
-		$r = _r$7.SetProperty("height", "20px", ""); /* */ $s = 13; case 13: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		_r$8 = htmlEl.Style(); /* */ $s = 14; case 14: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
-		$r = _r$8.SetProperty("position", "absolute", ""); /* */ $s = 15; case 15: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		s.x = 500;
-		s.y = 500;
-		$r = s.SetPosition(); /* */ $s = 16; case 16: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Ship.ptr.prototype.Initialize }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f.htmlEl = htmlEl; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	Ship.prototype.Initialize = function() { return this.$val.Initialize(); };
+	ptrType$3 = $ptrType(dom.HTMLCanvasElement);
+	funcType$1 = $funcType([], [], false);
+	ptrType$4 = $ptrType(KeyboardState);
+	ptrType$5 = $ptrType(Ship);
 	KeyboardState.ptr.prototype.handleKeyDown = function(event) {
 		var _r, event, keyCode, s, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; event = $f.event; keyCode = $f.keyCode; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -23437,17 +23407,6 @@ $packages["space-ship"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: KeyboardState.ptr.prototype.handleKeyDown }; } $f._r = _r; $f.event = event; $f.keyCode = keyCode; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	KeyboardState.prototype.handleKeyDown = function(event) { return this.$val.handleKeyDown(event); };
-	Ship.ptr.prototype.setRotation = function() {
-		var _r, htmlEl, s, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; htmlEl = $f.htmlEl; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		s = this;
-		htmlEl = $assertType(s.element, dom.HTMLElement);
-		_r = htmlEl.Style(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		$r = _r.SetProperty("transform", "rotate(" + strconv.FormatFloat(s.rotation, 102, 4, 64) + "deg)", ""); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Ship.ptr.prototype.setRotation }; } $f._r = _r; $f.htmlEl = htmlEl; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	Ship.prototype.setRotation = function() { return this.$val.setRotation(); };
 	KeyboardState.ptr.prototype.handleKeyUp = function(event) {
 		var event, keyCode, s;
 		s = this;
@@ -23466,11 +23425,15 @@ $packages["space-ship"] = (function() {
 		}
 	};
 	KeyboardState.prototype.handleKeyUp = function(event) { return this.$val.handleKeyUp(event); };
+	New = function() {
+		return js.MakeWrapper(new Ship.ptr($ifaceNil, 0, 0, 0, 0, 0, 0, "", null, ptrType$1.nil));
+	};
+	$pkg.New = New;
 	cycle = function(ks, ship) {
 		var ks, ship;
 		return (function $b() {
-			var _r, _r$1, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			var adjacent, oposite, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; adjacent = $f.adjacent; oposite = $f.oposite; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 			if (ks.up) {
 				ship.velocity = ship.velocity + 0.25;
 			}
@@ -23478,29 +23441,23 @@ $packages["space-ship"] = (function() {
 				ship.velocity = ship.velocity - 0.25;
 			}
 			if (ks.left) {
-				ship.rotationalSpeed = ship.rotationalSpeed - 0.25;
+				ship.rotationalSpeed = ship.rotationalSpeed - 0.005;
 			}
 			if (ks.right) {
-				ship.rotationalSpeed = ship.rotationalSpeed + 0.25;
+				ship.rotationalSpeed = ship.rotationalSpeed + 0.005;
 			}
-			/* */ if (!((ship.rotationalSpeed === 0))) { $s = 1; continue; }
-			/* */ $s = 2; continue;
-			/* if (!((ship.rotationalSpeed === 0))) { */ case 1:
-				_r = fmt.Println(new sliceType([new $Float64(ship.rotation), new $Float64(ship.rotationalSpeed)])); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-				_r;
+			if (!((ship.rotationalSpeed === 0))) {
 				ship.rotation = ship.rotation + ship.rotationalSpeed;
-				$r = ship.setRotation(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			/* } */ case 2:
-			/* */ if (!((ship.velocity === 0))) { $s = 5; continue; }
-			/* */ $s = 6; continue;
-			/* if (!((ship.velocity === 0))) { */ case 5:
-				ship.y = ship.y - ship.velocity;
-				$r = ship.SetPosition(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			/* } */ case 6:
-			_r$1 = dom.GetWindow().SetTimeout(cycle(ks, ship), 50); /* */ $s = 8; case 8: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-			_r$1;
+			}
+			if (!((ship.velocity === 0))) {
+				oposite = math.Sin(ship.rotation) * ship.velocity;
+				adjacent = math.Cos(ship.rotation) * ship.velocity;
+				ship.y = ship.y - adjacent;
+				ship.x = ship.x + oposite;
+			}
+			$r = ship.Draw(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			$s = -1; return;
-			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f._r = _r; $f._r$1 = _r$1; $f.$s = $s; $f.$r = $r; return $f;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.adjacent = adjacent; $f.oposite = oposite; $f.$s = $s; $f.$r = $r; return $f;
 		});
 	};
 	main = function() {
@@ -23514,8 +23471,8 @@ $packages["space-ship"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: main }; } $f._r = _r; $f._r$1 = _r$1; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Initialize = function(e) {
-		var _r, _r$1, _r$2, _r$3, e, keyboardState, ship, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; e = $f.e; keyboardState = $f.keyboardState; ship = $f.ship; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var _r, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, canvas, ctx, e, keyboardState, ship, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; canvas = $f.canvas; ctx = $f.ctx; e = $f.e; keyboardState = $f.keyboardState; ship = $f.ship; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		keyboardState = [keyboardState];
 		ship = [ship];
 		keyboardState[0] = new KeyboardState.ptr(false, false, false, false);
@@ -23525,30 +23482,68 @@ $packages["space-ship"] = (function() {
 		_r$2 = dom.GetWindow().Document(); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 		_r$3 = _r$2.AddEventListener("keyup", true, $methodVal(keyboardState[0], "handleKeyUp")); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
 		_r$3;
-		ship[0] = new Ship.ptr($ifaceNil, 0, 0, 0, 0, 0, 0);
-		$r = ship[0].Initialize(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = cycle(keyboardState[0], ship[0])(); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		_r$4 = dom.GetWindow().Document(); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+		_r$5 = _r$4.GetElementByID("game-canvas"); /* */ $s = 6; case 6: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+		canvas = $assertType(_r$5, ptrType$3);
+		ctx = canvas.GetContext2d();
+		ship[0] = new Ship.ptr($ifaceNil, 0, 0, 0, 0, 0, 0, "", null, ctx);
+		ship[0].Initialize();
+		_r$6 = dom.GetWindow().SetInterval(cycle(keyboardState[0], ship[0]), 50); /* */ $s = 7; case 7: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
+		_r$6;
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Initialize }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f.e = e; $f.keyboardState = keyboardState; $f.ship = ship; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Initialize }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f.canvas = canvas; $f.ctx = ctx; $f.e = e; $f.keyboardState = keyboardState; $f.ship = ship; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Initialize = Initialize;
-	ptrType$2.methods = [{prop: "SetPosition", name: "SetPosition", pkg: "", typ: $funcType([], [], false)}, {prop: "Initialize", name: "Initialize", pkg: "", typ: $funcType([], [], false)}, {prop: "setRotation", name: "setRotation", pkg: "space-ship", typ: $funcType([], [], false)}];
-	ptrType$3.methods = [{prop: "handleKeyDown", name: "handleKeyDown", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}, {prop: "handleKeyUp", name: "handleKeyUp", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}];
-	Ship.init("space-ship", [{prop: "element", name: "element", anonymous: false, exported: false, typ: dom.Element, tag: ""}, {prop: "velocity", name: "velocity", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "x", name: "x", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "y", name: "y", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "direction", name: "direction", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotationalSpeed", name: "rotationalSpeed", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotation", name: "rotation", anonymous: false, exported: false, typ: $Float64, tag: ""}]);
+	Ship.ptr.prototype.Initialize = function() {
+		var s;
+		s = this;
+		s.x = 400;
+		s.y = 400;
+		s.img = new ($global.Image)();
+		s.img.src = $externalize("./ship.svg", $String);
+		s.img.addEventListener($externalize("load", $String), $externalize((function $b() {
+			var $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			$r = s.Draw(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$s = $s; $f.$r = $r; return $f;
+		}), funcType$1), $externalize(false, $Bool));
+	};
+	Ship.prototype.Initialize = function() { return this.$val.Initialize(); };
+	Ship.ptr.prototype.Draw = function() {
+		var _r, s, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; s = $f.s; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		s = this;
+		_r = fmt.Println(new sliceType([new $String("In draw")])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r;
+		s.ctx.ClearRect(0, 0, 800, 800);
+		s.ctx.Save();
+		s.ctx.Translate(((s.x >> 0)), ((s.y >> 0)));
+		s.ctx.Rotate(s.rotation);
+		s.ctx.Object.drawImage(s.img, -60, -60, 200, 200);
+		s.ctx.Restore();
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Ship.ptr.prototype.Draw }; } $f._r = _r; $f.s = s; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Ship.prototype.Draw = function() { return this.$val.Draw(); };
+	ptrType$4.methods = [{prop: "handleKeyDown", name: "handleKeyDown", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}, {prop: "handleKeyUp", name: "handleKeyUp", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}];
+	ptrType$5.methods = [{prop: "Initialize", name: "Initialize", pkg: "", typ: $funcType([], [], false)}, {prop: "Draw", name: "Draw", pkg: "", typ: $funcType([], [], false)}, {prop: "setRotation", name: "setRotation", pkg: "space-ship", typ: $funcType([], [], false)}];
 	KeyboardState.init("space-ship", [{prop: "up", name: "up", anonymous: false, exported: false, typ: $Bool, tag: ""}, {prop: "down", name: "down", anonymous: false, exported: false, typ: $Bool, tag: ""}, {prop: "left", name: "left", anonymous: false, exported: false, typ: $Bool, tag: ""}, {prop: "right", name: "right", anonymous: false, exported: false, typ: $Bool, tag: ""}]);
+	Ship.init("space-ship", [{prop: "element", name: "element", anonymous: false, exported: false, typ: dom.Element, tag: ""}, {prop: "velocity", name: "velocity", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "x", name: "x", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "y", name: "y", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "direction", name: "direction", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotationalSpeed", name: "rotationalSpeed", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotation", name: "rotation", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "link", name: "link", anonymous: false, exported: false, typ: $String, tag: ""}, {prop: "img", name: "img", anonymous: false, exported: false, typ: ptrType$2, tag: ""}, {prop: "ctx", name: "ctx", anonymous: false, exported: false, typ: ptrType$1, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		$r = fmt.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = js.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = dom.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = strconv.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		/* */ if ($pkg === $mainPkg) { $s = 5; continue; }
-		/* */ $s = 6; continue;
-		/* if ($pkg === $mainPkg) { */ case 5:
-			$r = main(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = math.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = strconv.$init(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ if ($pkg === $mainPkg) { $s = 6; continue; }
+		/* */ $s = 7; continue;
+		/* if ($pkg === $mainPkg) { */ case 6:
+			$r = main(); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			$mainFinished = true;
-		/* } */ case 6:
+		/* } */ case 7:
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.$init = $init;

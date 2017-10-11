@@ -2,9 +2,9 @@ package main
 
 import (
 	"honnef.co/go/js/dom"
-	"math"
 	"strconv"
 	"github.com/gopherjs/gopherjs/js"
+	"fmt"
 )
 
 type Ship struct {
@@ -21,6 +21,8 @@ type Ship struct {
 }
 
 func (s *Ship) Initialize() {
+	s.x = 400;
+	s.y = 400;
 	s.img = js.Global.Get("Image").New()
 	s.img.Set("src", "./ship.svg")
 	s.img.Call("addEventListener", "load", func() {
@@ -29,18 +31,14 @@ func (s *Ship) Initialize() {
 }
 
 func (s *Ship) Draw() {
+	fmt.Println("In draw")
+	s.ctx.ClearRect(0, 0, 800, 800);
 	s.ctx.Save(); // save current state
+	s.ctx.Translate(int(s.x), int(s.y));
     s.ctx.Rotate(s.rotation); // rotate
-	s.ctx.Call("drawImage", s.img, s.x, s.y, 30, 30)
+	s.ctx.Call("drawImage", s.img, -60, -60, 200, 200)
 	s.ctx.Restore();
 }
-
-func (s *Ship) SetPosition() {
-	htmlEl := s.element.(dom.HTMLElement)
-	htmlEl.Style().SetProperty("left", strconv.FormatFloat(s.x, 'E', -1, 64) + "px", "")
-	htmlEl.Style().SetProperty("top", strconv.FormatFloat(s.y, 'E', -1, 64) + "px", "")
-}
-
 
 func (s *Ship) setRotation() {
 	htmlEl := s.element.(dom.HTMLElement)
