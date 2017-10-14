@@ -13,17 +13,18 @@ type Ship struct {
 	rotationalSpeed float64
 	rotation float64
 	link string
-	img *js.Object
+	ship *js.Object
+	shipEngineOn *js.Object
+	ks *KeyboardState
 }
 
 func (s *Ship) Initialize() {
 	s.radius = 50
 	s.reset()
-	s.img = js.Global.Get("Image").New()
-	s.img.Set("src", "./ship.svg")
-	s.img.Call("addEventListener", "load", func() {
-		s.Draw()
-	}, false)
+	s.ship = js.Global.Get("Image").New()
+	s.ship.Set("src", "./ship.svg")
+	s.shipEngineOn = js.Global.Get("Image").New()
+	s.shipEngineOn.Set("src", "./ship-engine-on.svg")
 }
 
 func(s *Ship) reset() {
@@ -42,7 +43,15 @@ func (s *Ship) Draw() {
 		s.canvas.ctx.Save(); // save current state
 		s.canvas.ctx.Translate(int(s.x), int(s.y));
 		s.canvas.ctx.Rotate(s.rotation); // rotate
-		s.canvas.ctx.Call("drawImage", s.img, -s.radius/2, -s.radius/2,  s.radius * 2, s.radius * 2)
+
+		var img *js.Object
+
+		if(s.ks.up) {
+			img = s.shipEngineOn
+		} else {
+			img = s.ship
+		}
+		s.canvas.ctx.Call("drawImage", img, -s.radius * 1.25, -s.radius *1.25,  s.radius * 2 * 1.25, s.radius * 2 * 1.25)
 		s.canvas.ctx.Restore();
 	} else if (s.exploded() == false) {
 		s.explode()

@@ -59,7 +59,7 @@ func Initialize(e dom.Event) {
 	domCanvas := dom.GetWindow().Document().GetElementByID("game-canvas").(*dom.HTMLCanvasElement)
 	ctx := domCanvas.GetContext2d()
 	canvas := Canvas{ctx: ctx, width: 800, height: 800}
-	ship := Ship{}
+	ship := Ship{ks: &keyboardState}
 	ship.canvas = &canvas
 	canvas.ship = ship
 	canvas.Initialize();

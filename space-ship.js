@@ -23973,7 +23973,7 @@ $packages["math/rand"] = (function() {
 	return $pkg;
 })();
 $packages["space-ship"] = (function() {
-	var $pkg = {}, $init, fmt, js, dom, math, rand, Asteroid, Canvas, Exploder, KeyboardState, Ship, Wormhole, ptrType, ptrType$1, sliceType, ptrType$2, ptrType$3, ptrType$4, sliceType$1, funcType, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, cycle, main, Initialize;
+	var $pkg = {}, $init, fmt, js, dom, math, rand, Asteroid, Canvas, Exploder, KeyboardState, Ship, Wormhole, ptrType, ptrType$1, sliceType, ptrType$2, ptrType$3, ptrType$4, ptrType$5, sliceType$1, ptrType$6, ptrType$7, ptrType$8, ptrType$9, cycle, main, Initialize;
 	fmt = $packages["fmt"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	dom = $packages["honnef.co/go/js/dom"];
@@ -23994,8 +23994,8 @@ $packages["space-ship"] = (function() {
 	Canvas = $pkg.Canvas = $newType(0, $kindStruct, "main.Canvas", true, "space-ship", true, function(ctx_, ship_, asteroids_, explosion_, wormhole_, width_, height_, level_) {
 		this.$val = this;
 		if (arguments.length === 0) {
-			this.ctx = ptrType$3.nil;
-			this.ship = new Ship.ptr(new Exploder.ptr(ptrType.nil, 0, 0, 0, 0), $ifaceNil, 0, 0, 0, 0, "", null);
+			this.ctx = ptrType$4.nil;
+			this.ship = new Ship.ptr(new Exploder.ptr(ptrType.nil, 0, 0, 0, 0), $ifaceNil, 0, 0, 0, 0, "", null, null, ptrType$2.nil);
 			this.asteroids = sliceType$1.nil;
 			this.explosion = null;
 			this.wormhole = new Wormhole.ptr(ptrType.nil, 0, 0, 0, 0, null);
@@ -24043,7 +24043,7 @@ $packages["space-ship"] = (function() {
 		this.left = left_;
 		this.right = right_;
 	});
-	Ship = $pkg.Ship = $newType(0, $kindStruct, "main.Ship", true, "space-ship", true, function(Exploder_, element_, velocity_, direction_, rotationalSpeed_, rotation_, link_, img_) {
+	Ship = $pkg.Ship = $newType(0, $kindStruct, "main.Ship", true, "space-ship", true, function(Exploder_, element_, velocity_, direction_, rotationalSpeed_, rotation_, link_, ship_, shipEngineOn_, ks_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Exploder = new Exploder.ptr(ptrType.nil, 0, 0, 0, 0);
@@ -24053,7 +24053,9 @@ $packages["space-ship"] = (function() {
 			this.rotationalSpeed = 0;
 			this.rotation = 0;
 			this.link = "";
-			this.img = null;
+			this.ship = null;
+			this.shipEngineOn = null;
+			this.ks = ptrType$2.nil;
 			return;
 		}
 		this.Exploder = Exploder_;
@@ -24063,7 +24065,9 @@ $packages["space-ship"] = (function() {
 		this.rotationalSpeed = rotationalSpeed_;
 		this.rotation = rotation_;
 		this.link = link_;
-		this.img = img_;
+		this.ship = ship_;
+		this.shipEngineOn = shipEngineOn_;
+		this.ks = ks_;
 	});
 	Wormhole = $pkg.Wormhole = $newType(0, $kindStruct, "main.Wormhole", true, "space-ship", true, function(canvas_, x_, y_, radius_, rotation_, img_) {
 		this.$val = this;
@@ -24086,15 +24090,14 @@ $packages["space-ship"] = (function() {
 	ptrType = $ptrType(Canvas);
 	ptrType$1 = $ptrType(dom.KeyboardEvent);
 	sliceType = $sliceType($emptyInterface);
-	ptrType$2 = $ptrType(dom.HTMLCanvasElement);
-	ptrType$3 = $ptrType(dom.CanvasRenderingContext2D);
-	ptrType$4 = $ptrType(Asteroid);
-	sliceType$1 = $sliceType(ptrType$4);
-	funcType = $funcType([], [], false);
-	ptrType$5 = $ptrType(Ship);
-	ptrType$6 = $ptrType(js.Object);
-	ptrType$7 = $ptrType(Exploder);
-	ptrType$8 = $ptrType(KeyboardState);
+	ptrType$2 = $ptrType(KeyboardState);
+	ptrType$3 = $ptrType(dom.HTMLCanvasElement);
+	ptrType$4 = $ptrType(dom.CanvasRenderingContext2D);
+	ptrType$5 = $ptrType(Asteroid);
+	sliceType$1 = $sliceType(ptrType$5);
+	ptrType$6 = $ptrType(Ship);
+	ptrType$7 = $ptrType(js.Object);
+	ptrType$8 = $ptrType(Exploder);
 	ptrType$9 = $ptrType(Wormhole);
 	Asteroid.ptr.prototype.Intersects = function(ship) {
 		var a, distance, hypot, ship, xDistance, yDistance;
@@ -24102,7 +24105,7 @@ $packages["space-ship"] = (function() {
 		xDistance = math.Abs(a.Exploder.x - ship.Exploder.x);
 		yDistance = math.Abs(a.Exploder.y - ship.Exploder.y);
 		hypot = math.Hypot(xDistance, yDistance);
-		distance = hypot - (a.Exploder.radius + ship.Exploder.radius);
+		distance = hypot - a.Exploder.radius - ship.Exploder.radius;
 		if (distance < 0) {
 			if ((a.Exploder.explodeFrame === 0)) {
 				a.Exploder.explodeFrame = 1;
@@ -24134,7 +24137,7 @@ $packages["space-ship"] = (function() {
 		var a;
 		a = this;
 		if ((a.Exploder.explodeFrame === 0)) {
-			a.Exploder.canvas.ctx.Object.drawImage(a.img, a.Exploder.x, a.Exploder.y, a.Exploder.radius * 2, a.Exploder.radius * 2);
+			a.Exploder.canvas.ctx.Object.drawImage(a.img, a.Exploder.x - a.Exploder.radius, a.Exploder.y - a.Exploder.radius, a.Exploder.radius * 2, a.Exploder.radius * 2);
 		} else if (a.Exploder.exploded() === false) {
 			a.Exploder.explode();
 		}
@@ -24321,10 +24324,10 @@ $packages["space-ship"] = (function() {
 		_r$3;
 		_r$4 = dom.GetWindow().Document(); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
 		_r$5 = _r$4.GetElementByID("game-canvas"); /* */ $s = 6; case 6: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
-		domCanvas = $assertType(_r$5, ptrType$2);
+		domCanvas = $assertType(_r$5, ptrType$3);
 		ctx = domCanvas.GetContext2d();
-		canvas[0] = new Canvas.ptr(ctx, new Ship.ptr(new Exploder.ptr(ptrType.nil, 0, 0, 0, 0), $ifaceNil, 0, 0, 0, 0, "", null), sliceType$1.nil, null, new Wormhole.ptr(ptrType.nil, 0, 0, 0, 0, null), 800, 800, 0);
-		ship = new Ship.ptr(new Exploder.ptr(ptrType.nil, 0, 0, 0, 0), $ifaceNil, 0, 0, 0, 0, "", null);
+		canvas[0] = new Canvas.ptr(ctx, new Ship.ptr(new Exploder.ptr(ptrType.nil, 0, 0, 0, 0), $ifaceNil, 0, 0, 0, 0, "", null, null, ptrType$2.nil), sliceType$1.nil, null, new Wormhole.ptr(ptrType.nil, 0, 0, 0, 0, null), 800, 800, 0);
+		ship = new Ship.ptr(new Exploder.ptr(ptrType.nil, 0, 0, 0, 0), $ifaceNil, 0, 0, 0, 0, "", null, null, keyboardState[0]);
 		ship.Exploder.canvas = canvas[0];
 		Ship.copy(canvas[0].ship, ship);
 		$r = canvas[0].Initialize(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
@@ -24339,11 +24342,10 @@ $packages["space-ship"] = (function() {
 		s = this;
 		s.Exploder.radius = 50;
 		s.reset();
-		s.img = new ($global.Image)();
-		s.img.src = $externalize("./ship.svg", $String);
-		s.img.addEventListener($externalize("load", $String), $externalize((function() {
-			s.Draw();
-		}), funcType), $externalize(false, $Bool));
+		s.ship = new ($global.Image)();
+		s.ship.src = $externalize("./ship.svg", $String);
+		s.shipEngineOn = new ($global.Image)();
+		s.shipEngineOn.src = $externalize("./ship-engine-on.svg", $String);
 	};
 	Ship.prototype.Initialize = function() { return this.$val.Initialize(); };
 	Ship.ptr.prototype.reset = function() {
@@ -24360,13 +24362,19 @@ $packages["space-ship"] = (function() {
 	};
 	Ship.prototype.reset = function() { return this.$val.reset(); };
 	Ship.ptr.prototype.Draw = function() {
-		var s;
+		var img, s;
 		s = this;
 		if ((s.Exploder.explodeFrame === 0)) {
 			s.Exploder.canvas.ctx.Save();
 			s.Exploder.canvas.ctx.Translate(((s.Exploder.x >> 0)), ((s.Exploder.y >> 0)));
 			s.Exploder.canvas.ctx.Rotate(s.rotation);
-			s.Exploder.canvas.ctx.Object.drawImage(s.img, -s.Exploder.radius / 2, -s.Exploder.radius / 2, s.Exploder.radius * 2, s.Exploder.radius * 2);
+			img = null;
+			if (s.ks.up) {
+				img = s.shipEngineOn;
+			} else {
+				img = s.ship;
+			}
+			s.Exploder.canvas.ctx.Object.drawImage(img, -s.Exploder.radius * 1.25, -s.Exploder.radius * 1.25, s.Exploder.radius * 2 * 1.25, s.Exploder.radius * 2 * 1.25);
 			s.Exploder.canvas.ctx.Restore();
 		} else if (s.Exploder.exploded() === false) {
 			s.Exploder.explode();
@@ -24404,18 +24412,18 @@ $packages["space-ship"] = (function() {
 		w.rotation = w.rotation + (0.1);
 	};
 	Wormhole.prototype.draw = function() { return this.$val.draw(); };
-	ptrType$4.methods = [{prop: "Intersects", name: "Intersects", pkg: "", typ: $funcType([ptrType$5], [], false)}, {prop: "CreateRandom", name: "CreateRandom", pkg: "", typ: $funcType([], [], false)}, {prop: "Draw", name: "Draw", pkg: "", typ: $funcType([], [], false)}];
+	ptrType$5.methods = [{prop: "Intersects", name: "Intersects", pkg: "", typ: $funcType([ptrType$6], [], false)}, {prop: "CreateRandom", name: "CreateRandom", pkg: "", typ: $funcType([], [], false)}, {prop: "Draw", name: "Draw", pkg: "", typ: $funcType([], [], false)}];
 	ptrType.methods = [{prop: "CreateAsteroids", name: "CreateAsteroids", pkg: "", typ: $funcType([], [], false)}, {prop: "levelUp", name: "levelUp", pkg: "space-ship", typ: $funcType([], [], false)}, {prop: "Initialize", name: "Initialize", pkg: "", typ: $funcType([], [], false)}, {prop: "Draw", name: "Draw", pkg: "", typ: $funcType([], [], false)}];
-	ptrType$7.methods = [{prop: "exploded", name: "exploded", pkg: "space-ship", typ: $funcType([], [$Bool], false)}, {prop: "explode", name: "explode", pkg: "space-ship", typ: $funcType([], [], false)}];
-	ptrType$8.methods = [{prop: "handleKeyDown", name: "handleKeyDown", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}, {prop: "handleKeyUp", name: "handleKeyUp", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}];
-	ptrType$5.methods = [{prop: "Initialize", name: "Initialize", pkg: "", typ: $funcType([], [], false)}, {prop: "reset", name: "reset", pkg: "space-ship", typ: $funcType([], [], false)}, {prop: "Draw", name: "Draw", pkg: "", typ: $funcType([], [], false)}];
-	ptrType$9.methods = [{prop: "intersects", name: "intersects", pkg: "space-ship", typ: $funcType([ptrType$5], [$Bool], false)}, {prop: "init", name: "init", pkg: "space-ship", typ: $funcType([], [], false)}, {prop: "draw", name: "draw", pkg: "space-ship", typ: $funcType([], [], false)}];
-	Asteroid.init("space-ship", [{prop: "Exploder", name: "Exploder", anonymous: true, exported: true, typ: Exploder, tag: ""}, {prop: "image", name: "image", anonymous: false, exported: false, typ: $String, tag: ""}, {prop: "img", name: "img", anonymous: false, exported: false, typ: ptrType$6, tag: ""}]);
-	Canvas.init("space-ship", [{prop: "ctx", name: "ctx", anonymous: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "ship", name: "ship", anonymous: false, exported: false, typ: Ship, tag: ""}, {prop: "asteroids", name: "asteroids", anonymous: false, exported: false, typ: sliceType$1, tag: ""}, {prop: "explosion", name: "explosion", anonymous: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "wormhole", name: "wormhole", anonymous: false, exported: false, typ: Wormhole, tag: ""}, {prop: "width", name: "width", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "height", name: "height", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "level", name: "level", anonymous: false, exported: false, typ: $Float64, tag: ""}]);
+	ptrType$8.methods = [{prop: "exploded", name: "exploded", pkg: "space-ship", typ: $funcType([], [$Bool], false)}, {prop: "explode", name: "explode", pkg: "space-ship", typ: $funcType([], [], false)}];
+	ptrType$2.methods = [{prop: "handleKeyDown", name: "handleKeyDown", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}, {prop: "handleKeyUp", name: "handleKeyUp", pkg: "space-ship", typ: $funcType([dom.Event], [], false)}];
+	ptrType$6.methods = [{prop: "Initialize", name: "Initialize", pkg: "", typ: $funcType([], [], false)}, {prop: "reset", name: "reset", pkg: "space-ship", typ: $funcType([], [], false)}, {prop: "Draw", name: "Draw", pkg: "", typ: $funcType([], [], false)}];
+	ptrType$9.methods = [{prop: "intersects", name: "intersects", pkg: "space-ship", typ: $funcType([ptrType$6], [$Bool], false)}, {prop: "init", name: "init", pkg: "space-ship", typ: $funcType([], [], false)}, {prop: "draw", name: "draw", pkg: "space-ship", typ: $funcType([], [], false)}];
+	Asteroid.init("space-ship", [{prop: "Exploder", name: "Exploder", anonymous: true, exported: true, typ: Exploder, tag: ""}, {prop: "image", name: "image", anonymous: false, exported: false, typ: $String, tag: ""}, {prop: "img", name: "img", anonymous: false, exported: false, typ: ptrType$7, tag: ""}]);
+	Canvas.init("space-ship", [{prop: "ctx", name: "ctx", anonymous: false, exported: false, typ: ptrType$4, tag: ""}, {prop: "ship", name: "ship", anonymous: false, exported: false, typ: Ship, tag: ""}, {prop: "asteroids", name: "asteroids", anonymous: false, exported: false, typ: sliceType$1, tag: ""}, {prop: "explosion", name: "explosion", anonymous: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "wormhole", name: "wormhole", anonymous: false, exported: false, typ: Wormhole, tag: ""}, {prop: "width", name: "width", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "height", name: "height", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "level", name: "level", anonymous: false, exported: false, typ: $Float64, tag: ""}]);
 	Exploder.init("space-ship", [{prop: "canvas", name: "canvas", anonymous: false, exported: false, typ: ptrType, tag: ""}, {prop: "x", name: "x", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "y", name: "y", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "radius", name: "radius", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "explodeFrame", name: "explodeFrame", anonymous: false, exported: false, typ: $Float64, tag: ""}]);
 	KeyboardState.init("space-ship", [{prop: "up", name: "up", anonymous: false, exported: false, typ: $Bool, tag: ""}, {prop: "down", name: "down", anonymous: false, exported: false, typ: $Bool, tag: ""}, {prop: "left", name: "left", anonymous: false, exported: false, typ: $Bool, tag: ""}, {prop: "right", name: "right", anonymous: false, exported: false, typ: $Bool, tag: ""}]);
-	Ship.init("space-ship", [{prop: "Exploder", name: "Exploder", anonymous: true, exported: true, typ: Exploder, tag: ""}, {prop: "element", name: "element", anonymous: false, exported: false, typ: dom.Element, tag: ""}, {prop: "velocity", name: "velocity", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "direction", name: "direction", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotationalSpeed", name: "rotationalSpeed", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotation", name: "rotation", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "link", name: "link", anonymous: false, exported: false, typ: $String, tag: ""}, {prop: "img", name: "img", anonymous: false, exported: false, typ: ptrType$6, tag: ""}]);
-	Wormhole.init("space-ship", [{prop: "canvas", name: "canvas", anonymous: false, exported: false, typ: ptrType, tag: ""}, {prop: "x", name: "x", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "y", name: "y", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "radius", name: "radius", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotation", name: "rotation", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "img", name: "img", anonymous: false, exported: false, typ: ptrType$6, tag: ""}]);
+	Ship.init("space-ship", [{prop: "Exploder", name: "Exploder", anonymous: true, exported: true, typ: Exploder, tag: ""}, {prop: "element", name: "element", anonymous: false, exported: false, typ: dom.Element, tag: ""}, {prop: "velocity", name: "velocity", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "direction", name: "direction", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotationalSpeed", name: "rotationalSpeed", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotation", name: "rotation", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "link", name: "link", anonymous: false, exported: false, typ: $String, tag: ""}, {prop: "ship", name: "ship", anonymous: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "shipEngineOn", name: "shipEngineOn", anonymous: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "ks", name: "ks", anonymous: false, exported: false, typ: ptrType$2, tag: ""}]);
+	Wormhole.init("space-ship", [{prop: "canvas", name: "canvas", anonymous: false, exported: false, typ: ptrType, tag: ""}, {prop: "x", name: "x", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "y", name: "y", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "radius", name: "radius", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "rotation", name: "rotation", anonymous: false, exported: false, typ: $Float64, tag: ""}, {prop: "img", name: "img", anonymous: false, exported: false, typ: ptrType$7, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:

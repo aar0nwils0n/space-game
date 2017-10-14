@@ -17,7 +17,7 @@ func (a *Asteroid) Intersects(ship *Ship) {
 	xDistance := math.Abs(a.x - ship.x)	
 	yDistance := math.Abs(a.y - ship.y)
 	hypot := math.Hypot(xDistance, yDistance)
-	distance := hypot - (a.radius + ship.radius)
+	distance := hypot - a.radius - ship.radius
 	
 	if(distance < 0) {
 		if(a.explodeFrame == 0) {
@@ -34,13 +34,13 @@ func (a *Asteroid) CreateRandom() {
 	a.img = js.Global.Get("Image").New()
 	a.img.Set("src", a.image)
 	a.radius = (rand.Float64() + 0.25) * 50
-	a.x = rand.Float64() * 800;
-	a.y = rand.Float64() * 800;
+	a.x = rand.Float64() * 800
+	a.y = rand.Float64() * 800
 }
 
 func (a *Asteroid) Draw() {
 	if(a.explodeFrame == 0) {
-		a.canvas.ctx.Call("drawImage", a.img, a.x, a.y, a.radius * 2, a.radius * 2)
+		a.canvas.ctx.Call("drawImage", a.img, a.x - a.radius, a.y - a.radius, a.radius * 2, a.radius * 2)
 	} else if(a.exploded() == false) {
 		a.explode()
 	} 
