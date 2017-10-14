@@ -18,13 +18,23 @@ type Ship struct {
 
 func (s *Ship) Initialize() {
 	s.radius = 50
-	s.x = 400;
-	s.y = 400;
+	s.reset()
 	s.img = js.Global.Get("Image").New()
 	s.img.Set("src", "./ship.svg")
 	s.img.Call("addEventListener", "load", func() {
 		s.Draw()
 	}, false)
+}
+
+func(s *Ship) reset() {
+	s.x = 400
+	s.y = 400
+	s.rotationalSpeed = 0
+	s.rotation = 0
+	s.direction = 0
+	s.velocity = 0
+	s.direction = 0
+	s.explodeFrame = 0
 }
 
 func (s *Ship) Draw() {
