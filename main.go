@@ -13,6 +13,8 @@ func New() *js.Object {
 
 func cycle(ks *KeyboardState, canvas *Canvas) func() {
 	return func() {
+		if(canvas.ship.exploded()) { return }
+
 		if(ks.up) {
 			canvas.ship.velocity = canvas.ship.velocity + 0.25
 		}
@@ -39,7 +41,6 @@ func cycle(ks *KeyboardState, canvas *Canvas) func() {
 			adjacent := math.Cos(canvas.ship.rotation) * canvas.ship.velocity
 			canvas.ship.y = canvas.ship.y - adjacent
 			canvas.ship.x = canvas.ship.x + oposite
-
 		}
 
 		canvas.Draw()
@@ -56,8 +57,10 @@ func Initialize(e dom.Event) {
 	dom.GetWindow().Document().AddEventListener("keyup", true, keyboardState.handleKeyUp)
 	domCanvas := dom.GetWindow().Document().GetElementByID("game-canvas").(*dom.HTMLCanvasElement)
 	ctx := domCanvas.GetContext2d()
-	ship := Ship{ctx: ctx}
-	canvas := Canvas{ctx: ctx, ship: ship}
+	canvas := Canvas{ctx: ctx, width: 800, height: 800}
+	ship := Ship{}
+	ship.canvas = &canvas
+	canvas.ship = ship
 	canvas.Initialize();
 	
 	dom.GetWindow().SetInterval(cycle(&keyboardState, &canvas), 50);

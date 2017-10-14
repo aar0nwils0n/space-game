@@ -6,21 +6,18 @@ import (
 )
 
 type Ship struct {
+	Exploder
 	element dom.Element
 	velocity float64
-	x float64
-	y float64
-	radius float64
 	direction float64
 	rotationalSpeed float64
 	rotation float64
 	link string
 	img *js.Object
-	ctx *dom.CanvasRenderingContext2D
 }
 
 func (s *Ship) Initialize() {
-	s.radius = 200
+	s.radius = 50
 	s.x = 400;
 	s.y = 400;
 	s.img = js.Global.Get("Image").New()
@@ -31,9 +28,13 @@ func (s *Ship) Initialize() {
 }
 
 func (s *Ship) Draw() {
-	s.ctx.Save(); // save current state
-	s.ctx.Translate(int(s.x), int(s.y));
-    s.ctx.Rotate(s.rotation); // rotate
-	s.ctx.Call("drawImage", s.img, -60, -60, 200, 200)
-	s.ctx.Restore();
+	if(s.explodeFrame == 0) {
+		s.canvas.ctx.Save(); // save current state
+		s.canvas.ctx.Translate(int(s.x), int(s.y));
+		s.canvas.ctx.Rotate(s.rotation); // rotate
+		s.canvas.ctx.Call("drawImage", s.img, -s.radius/2, -s.radius/2,  s.radius * 2, s.radius * 2)
+		s.canvas.ctx.Restore();
+	} else if (s.exploded() == false) {
+		s.explode()
+	}
 }
