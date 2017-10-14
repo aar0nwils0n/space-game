@@ -33,7 +33,7 @@ func (a *Asteroid) CreateRandom() {
 	a.image = "./asteroid.png"
 	a.img = js.Global.Get("Image").New()
 	a.img.Set("src", a.image)
-	a.radius = rand.Float64() * 50
+	a.radius = (rand.Float64() + 0.25) * 50
 	a.x = rand.Float64() * 800;
 	a.y = rand.Float64() * 800;
 }

@@ -24121,7 +24121,7 @@ $packages["space-ship"] = (function() {
 		a.img = new ($global.Image)();
 		a.img.src = $externalize(a.image, $String);
 		_r = rand.Float64(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		a.Exploder.radius = _r * 50;
+		a.Exploder.radius = (_r + 0.25) * 50;
 		_r$1 = rand.Float64(); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 		a.Exploder.x = _r$1 * 800;
 		_r$2 = rand.Float64(); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
@@ -24270,29 +24270,28 @@ $packages["space-ship"] = (function() {
 		return (function $b() {
 			var adjacent, oposite, $s, $r;
 			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; adjacent = $f.adjacent; oposite = $f.oposite; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-			if (canvas.ship.Exploder.exploded()) {
-				$s = -1; return;
-			}
-			if (ks.up) {
-				canvas.ship.velocity = canvas.ship.velocity + 0.25;
-			}
-			if (ks.down) {
-				canvas.ship.velocity = canvas.ship.velocity - 0.25;
-			}
-			if (ks.left) {
-				canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed - 0.005;
-			}
-			if (ks.right) {
-				canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed + 0.005;
-			}
-			if (!((canvas.ship.rotationalSpeed === 0))) {
-				canvas.ship.rotation = canvas.ship.rotation + canvas.ship.rotationalSpeed;
-			}
-			if (!((canvas.ship.velocity === 0))) {
-				oposite = math.Sin(canvas.ship.rotation) * canvas.ship.velocity;
-				adjacent = math.Cos(canvas.ship.rotation) * canvas.ship.velocity;
-				canvas.ship.Exploder.y = canvas.ship.Exploder.y - adjacent;
-				canvas.ship.Exploder.x = canvas.ship.Exploder.x + oposite;
+			if ((canvas.ship.Exploder.explodeFrame === 0)) {
+				if (ks.up) {
+					canvas.ship.velocity = canvas.ship.velocity + 0.25;
+				}
+				if (ks.down) {
+					canvas.ship.velocity = canvas.ship.velocity - 0.25;
+				}
+				if (ks.left) {
+					canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed - 0.005;
+				}
+				if (ks.right) {
+					canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed + 0.005;
+				}
+				if (!((canvas.ship.rotationalSpeed === 0))) {
+					canvas.ship.rotation = canvas.ship.rotation + canvas.ship.rotationalSpeed;
+				}
+				if (!((canvas.ship.velocity === 0))) {
+					oposite = math.Sin(canvas.ship.rotation) * canvas.ship.velocity;
+					adjacent = math.Cos(canvas.ship.rotation) * canvas.ship.velocity;
+					canvas.ship.Exploder.y = canvas.ship.Exploder.y - adjacent;
+					canvas.ship.Exploder.x = canvas.ship.Exploder.x + oposite;
+				}
 			}
 			$r = canvas.Draw(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			$s = -1; return;

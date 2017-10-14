@@ -13,36 +13,37 @@ func New() *js.Object {
 
 func cycle(ks *KeyboardState, canvas *Canvas) func() {
 	return func() {
-		if(canvas.ship.exploded()) { return }
+		if(canvas.ship.explodeFrame == 0) {
+			
+			if(ks.up) {
+				canvas.ship.velocity = canvas.ship.velocity + 0.25
+			}
 
-		if(ks.up) {
-			canvas.ship.velocity = canvas.ship.velocity + 0.25
-		}
+			if(ks.down) {
+				canvas.ship.velocity = canvas.ship.velocity - 0.25
+			}
 
-		if(ks.down) {
-			canvas.ship.velocity = canvas.ship.velocity - 0.25
-		}
+			if(ks.left) {
+				canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed - 0.005
+			}
 
-		if(ks.left) {
-			canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed - 0.005
-		}
+			if(ks.right) {
+				canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed + 0.005
+			}
+			
 
-		if(ks.right) {
-			canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed + 0.005
+			if(canvas.ship.rotationalSpeed != 0) {
+				canvas.ship.rotation = canvas.ship.rotation + canvas.ship.rotationalSpeed;
+			}
+			
+			if(canvas.ship.velocity != 0) {
+				oposite := math.Sin(canvas.ship.rotation) * canvas.ship.velocity
+				adjacent := math.Cos(canvas.ship.rotation) * canvas.ship.velocity
+				canvas.ship.y = canvas.ship.y - adjacent
+				canvas.ship.x = canvas.ship.x + oposite
+			}
 		}
 		
-
-		if(canvas.ship.rotationalSpeed != 0) {
-			canvas.ship.rotation = canvas.ship.rotation + canvas.ship.rotationalSpeed;
-		}
-		
-		if(canvas.ship.velocity != 0) {
-			oposite := math.Sin(canvas.ship.rotation) * canvas.ship.velocity
-			adjacent := math.Cos(canvas.ship.rotation) * canvas.ship.velocity
-			canvas.ship.y = canvas.ship.y - adjacent
-			canvas.ship.x = canvas.ship.x + oposite
-		}
-
 		canvas.Draw()
 	}
 }
