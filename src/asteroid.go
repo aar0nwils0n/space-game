@@ -13,7 +13,7 @@ type Asteroid struct {
 }
 
 
-func (a *Asteroid) Intersects(ship *Ship) {
+func (a *Asteroid) intersects(ship *Ship) bool {
 	xDistance := math.Abs(a.x - ship.x)	
 	yDistance := math.Abs(a.y - ship.y)
 	hypot := math.Hypot(xDistance, yDistance)
@@ -27,6 +27,8 @@ func (a *Asteroid) Intersects(ship *Ship) {
 			ship.explodeFrame = 1;
 		}
 	}
+
+	return distance < 0
 }
 
 func (a *Asteroid) CreateRandom() {

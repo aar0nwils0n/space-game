@@ -11,39 +11,39 @@ func New() *js.Object {
 	return js.MakeWrapper(&Ship{})
 }
 
-func cycle(ks *KeyboardState, canvas *Canvas) func() {
+func (s *Ship) cycle() func() {
 	return func() {
-		if(canvas.ship.explodeFrame == 0) {
-			oposite := math.Sin(canvas.ship.rotation) * 0.25
-			adjacent := math.Cos(canvas.ship.rotation) * 0.25
+		if(s.explodeFrame == 0) {
+			oposite := math.Sin(s.rotation) * 0.25
+			adjacent := math.Cos(s.rotation) * 0.25
 			
-			if(ks.up) {
-				canvas.ship.ySpeed -= adjacent
-				canvas.ship.xSpeed += oposite
+			if(s.ks.up) {
+				s.ySpeed -= adjacent
+				s.xSpeed += oposite
 			}
 
-			if(ks.left) {
-				canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed - 0.005
+			if(s.ks.left) {
+				s.rotationalSpeed = s.rotationalSpeed - 0.01
 			}
 
-			if(ks.right) {
-				canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed + 0.005
+			if(s.ks.right) {
+				s.rotationalSpeed = s.rotationalSpeed + 0.01
 			}
 			
-			if(canvas.ship.rotationalSpeed != 0) {
-				canvas.ship.rotation = canvas.ship.rotation + canvas.ship.rotationalSpeed;
+			if(s.rotationalSpeed != 0) {
+				s.rotation = s.rotation + s.rotationalSpeed;
 			}
 			
-			if(canvas.ship.xSpeed != 0) {
-				canvas.ship.x += canvas.ship.xSpeed
+			if(s.xSpeed != 0) {
+				s.x += s.xSpeed
 			}
 			
-			if(canvas.ship.ySpeed != 0) {
-				canvas.ship.y += canvas.ship.ySpeed
+			if(s.ySpeed != 0) {
+				s.y += s.ySpeed
 			}
 		}
 		
-		canvas.Draw()
+		s.canvas.Draw()
 	}
 }
 
@@ -63,5 +63,5 @@ func Initialize(e dom.Event) {
 	canvas.ship = ship
 	canvas.Initialize();
 	
-	dom.GetWindow().SetInterval(cycle(&keyboardState, &canvas), 50);
+	dom.GetWindow().SetInterval(canvas.ship.cycle(), 50);
 }

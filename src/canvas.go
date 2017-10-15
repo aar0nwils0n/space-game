@@ -50,7 +50,7 @@ func (c *Canvas) Draw() {
 	c.ship.Draw();
 	c.wormhole.draw();
 	for _, a := range c.asteroids {
-		a.Intersects(&c.ship)
+		a.intersects(&c.ship)
 		a.Draw()
 	}
 }
