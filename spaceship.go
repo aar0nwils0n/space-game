@@ -8,8 +8,8 @@ import (
 type Ship struct {
 	Exploder
 	element dom.Element
-	velocity float64
-	direction float64
+	xSpeed float64
+	ySpeed float64
 	rotationalSpeed float64
 	rotation float64
 	link string
@@ -19,7 +19,7 @@ type Ship struct {
 }
 
 func (s *Ship) Initialize() {
-	s.radius = 50
+	s.radius = 30
 	s.reset()
 	s.ship = js.Global.Get("Image").New()
 	s.ship.Set("src", "./ship.svg")
@@ -32,9 +32,8 @@ func(s *Ship) reset() {
 	s.y = 400
 	s.rotationalSpeed = 0
 	s.rotation = 0
-	s.direction = 0
-	s.velocity = 0
-	s.direction = 0
+	s.xSpeed = 0
+	s.ySpeed = 0
 	s.explodeFrame = 0
 }
 

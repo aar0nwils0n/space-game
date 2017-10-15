@@ -2,6 +2,7 @@ package main
 
 import (
 	"math"
+	"math/rand"
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -24,8 +25,8 @@ func (w *Wormhole) intersects(s *Ship) bool {
 
 func (w *Wormhole) init() {
 	w.radius = 100
-	w.x = 50;
-	w.y = 50;
+	w.x = rand.Float64() * 800
+	w.y = rand.Float64() * 800
 	w.img = js.Global.Get("Image").New()
 	w.img.Set("src", "./wormhole.png")
 }
