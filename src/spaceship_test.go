@@ -7,11 +7,38 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestOutofBounds(t *testing.T) {
+	assert := assert.New(t)
+	s := Ship{}
+	s.x = 0
+	s.y = 0
+	assert.Equal(s.outOfBounds(), false)
+
+	s.x = 800
+	s.y = 800
+	assert.Equal(s.outOfBounds(), false)
+
+	s.x = -1
+	assert.Equal(s.outOfBounds(), true)
+
+	s.x = 0
+	s.y = -1
+	assert.Equal(s.outOfBounds(), true)
+
+	s.y = 801
+	assert.Equal(s.outOfBounds(), true)
+
+	s.y = 0
+	s.x = 801
+	assert.Equal(s.outOfBounds(), true)
+
+}
 func TestShipCycle(t *testing.T) {
 	assert := assert.New(t)
 	ks := KeyboardState{}
-	ship := Ship{x: 0, y: 0, ks: &ks, acceleration: 0.25}
-
+	ship := Ship{ks: &ks, acceleration: 0.25}
+	ship.x = 0
+	ship.y = 0
 	//It should turn around
 	ks.up = true
 	ship.cycle()
