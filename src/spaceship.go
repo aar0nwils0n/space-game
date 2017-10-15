@@ -22,9 +22,9 @@ func (s *Ship) Initialize() {
 	s.radius = 30
 	s.reset()
 	s.ship = js.Global.Get("Image").New()
-	s.ship.Set("src", "./ship.svg")
+	s.ship.Set("src", "./assets/images/ship.svg")
 	s.shipEngineOn = js.Global.Get("Image").New()
-	s.shipEngineOn.Set("src", "./ship-engine-on.svg")
+	s.shipEngineOn.Set("src", "./assets/images/ship-engine-on.svg")
 }
 
 func(s *Ship) reset() {

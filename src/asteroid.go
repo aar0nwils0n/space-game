@@ -30,7 +30,7 @@ func (a *Asteroid) Intersects(ship *Ship) {
 }
 
 func (a *Asteroid) CreateRandom() {
-	a.image = "./asteroid.png"
+	a.image = "./assets/images/asteroid.png"
 	a.img = js.Global.Get("Image").New()
 	a.img.Set("src", a.image)
 	a.radius = (rand.Float64() + 0.25) * 50

@@ -28,14 +28,14 @@ func (w *Wormhole) init() {
 	w.x = rand.Float64() * 800
 	w.y = rand.Float64() * 800
 	w.img = js.Global.Get("Image").New()
-	w.img.Set("src", "./wormhole.png")
+	w.img.Set("src", "./assets/images/wormhole.png")
 }
 
 func (w *Wormhole) draw() {
 	w.canvas.ctx.Save(); // save current state
 	w.canvas.ctx.Translate(int(w.x), int(w.y));
 	w.canvas.ctx.Rotate(w.rotation); // rotate
-	w.canvas.ctx.Call("drawImage", w.img, -w.radius, -w.radius,  w.radius * 2, w.radius * 2)
+	w.canvas.ctx.Call("drawImage", w.img, -w.radius * 1.5, -w.radius * 1.5,  w.radius * 2 * 1.5, w.radius * 2 * 1.5)
 	w.canvas.ctx.Restore();
 	w.rotation += 0.1
 }

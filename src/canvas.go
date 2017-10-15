@@ -36,7 +36,7 @@ func (c *Canvas) Initialize() {
 	c.ship.Initialize()
 	c.CreateAsteroids()
 	c.explosion = js.Global.Get("Image").New()
-	c.explosion.Set("src", "./explosion.png")
+	c.explosion.Set("src", "./assets/images/explosion.png")
 	c.wormhole = Wormhole{}
 	c.wormhole.canvas = c
 	c.wormhole.init()

@@ -22,11 +22,6 @@ func cycle(ks *KeyboardState, canvas *Canvas) func() {
 				canvas.ship.xSpeed += oposite
 			}
 
-			if(ks.down) {
-				canvas.ship.ySpeed += adjacent
-				canvas.ship.xSpeed -= oposite
-			}
-
 			if(ks.left) {
 				canvas.ship.rotationalSpeed = canvas.ship.rotationalSpeed - 0.005
 			}
