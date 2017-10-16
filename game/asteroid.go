@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"math"
@@ -6,6 +6,7 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
+//Asteroid creates staic image on canvas
 type Asteroid struct {
 	Exploder
 	image string
@@ -30,9 +31,9 @@ func (a *Asteroid) intersects(ship *Ship) bool {
 	return distance < 0
 }
 
-func (a *Asteroid) Draw() {
+func (a *Asteroid) draw() {
 	if a.explodeFrame == 0 {
-		a.canvas.ctx.Call("drawImage", a.img, a.x-a.radius, a.y-a.radius, a.radius*2, a.radius*2)
+		a.Canvas.Ctx.Call("drawImage", a.img, a.x-a.radius, a.y-a.radius, a.radius*2, a.radius*2)
 	} else if a.exploded() == false {
 		a.explode()
 	}

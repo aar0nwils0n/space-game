@@ -1,7 +1,8 @@
-package main
+package game
 
+//Exploder draws a progressing explison upon the canvas
 type Exploder struct {
-	canvas       *Canvas
+	Canvas       *Canvas
 	x            float64
 	y            float64
 	radius       float64
@@ -14,6 +15,6 @@ func (e *Exploder) exploded() bool {
 
 func (e *Exploder) explode() {
 	explosionSize := e.radius * e.explodeFrame * 2
-	e.canvas.ctx.Call("drawImage", e.canvas.explosion, e.x-explosionSize/2, e.y-explosionSize/2, explosionSize, explosionSize)
+	e.Canvas.Ctx.Call("drawImage", e.Canvas.explosion, e.x-explosionSize/2, e.y-explosionSize/2, explosionSize, explosionSize)
 	e.explodeFrame++
 }

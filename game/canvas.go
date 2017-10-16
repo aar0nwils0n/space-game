@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"math/rand"
@@ -7,19 +7,20 @@ import (
 	"honnef.co/go/js/dom"
 )
 
+//Canvas holds all items to be drawn along with the state of the current level and context. Holds logic to generate items
 type Canvas struct {
-	ctx       *dom.CanvasRenderingContext2D
-	ship      Ship
+	Ctx       *dom.CanvasRenderingContext2D
+	Ship      Ship
 	asteroids []*Asteroid
 	explosion *js.Object
 	wormhole  Wormhole
-	width     float64
-	height    float64
+	Width     float64
+	Height    float64
 	level     float64
 }
 
 // CreateAsteroids creates random asteroid field based on Canvas.level
-func (c *Canvas) CreateAsteroids() {
+func (c *Canvas) createAsteroids() {
 	number := c.level + 3
 	imageURL := "./assets/images/asteroid.png"
 	img := js.Global.Get("Image").New()
@@ -44,7 +45,7 @@ func (c *Canvas) CreateAsteroids() {
 			}
 			a := Asteroid{}
 			a.img = img
-			a.canvas = c
+			a.Canvas = c
 			a.radius = (rand.Float64() + 0.25) * 50
 			a.y = y
 			a.x = x
@@ -55,13 +56,14 @@ func (c *Canvas) CreateAsteroids() {
 
 func (c *Canvas) levelUp() {
 	c.level++
-	c.ship.reset()
-	c.CreateAsteroids()
+	c.Ship.reset()
+	c.createAsteroids()
 }
 
+//Initialize creates all elements within canvas
 func (c *Canvas) Initialize() {
-	c.ship.Initialize()
-	c.CreateAsteroids()
+	c.Ship.Initialize()
+	c.createAsteroids()
 	c.explosion = js.Global.Get("Image").New()
 	c.explosion.Set("src", "./assets/images/explosion.png")
 	c.wormhole = Wormhole{}
@@ -69,15 +71,16 @@ func (c *Canvas) Initialize() {
 	c.wormhole.init()
 }
 
+//Draw checks for intersecting items then draws them on the canvas
 func (c *Canvas) Draw() {
-	if c.wormhole.intersects(&c.ship) == true {
+	if c.wormhole.intersects(&c.Ship) == true {
 		c.levelUp()
 	}
-	c.ctx.ClearRect(0, 0, int(c.width), int(c.height))
-	c.ship.Draw()
+	c.Ctx.ClearRect(0, 0, int(c.Width), int(c.Height))
+	c.Ship.draw()
 	c.wormhole.draw()
 	for _, a := range c.asteroids {
-		a.intersects(&c.ship)
-		a.Draw()
+		a.intersects(&c.Ship)
+		a.draw()
 	}
 }

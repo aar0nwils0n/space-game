@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"math"
@@ -6,6 +6,7 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
+//Wormhole is a rotating image that is drawn on the canvas
 type Wormhole struct {
 	canvas   *Canvas
 	x        float64
@@ -32,10 +33,10 @@ func (w *Wormhole) init() {
 }
 
 func (w *Wormhole) draw() {
-	w.canvas.ctx.Save() // save current state
-	w.canvas.ctx.Translate(int(w.x), int(w.y))
-	w.canvas.ctx.Rotate(w.rotation) // rotate
-	w.canvas.ctx.Call("drawImage", w.img, -w.radius*1.5, -w.radius*1.5, w.radius*2*1.5, w.radius*2*1.5)
-	w.canvas.ctx.Restore()
+	w.canvas.Ctx.Save() // save current state
+	w.canvas.Ctx.Translate(int(w.x), int(w.y))
+	w.canvas.Ctx.Rotate(w.rotation) // rotate
+	w.canvas.Ctx.Call("drawImage", w.img, -w.radius*1.5, -w.radius*1.5, w.radius*2*1.5, w.radius*2*1.5)
+	w.canvas.Ctx.Restore()
 	w.rotation += 0.1
 }

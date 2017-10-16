@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"math"
@@ -7,6 +7,7 @@ import (
 	"honnef.co/go/js/dom"
 )
 
+//Ship is an object that moves upon the canvas according to the keyboard state
 type Ship struct {
 	Exploder
 	element                dom.Element
@@ -18,7 +19,7 @@ type Ship struct {
 	link                   string
 	ship                   *js.Object
 	shipEngineOn           *js.Object
-	ks                     *KeyboardState
+	Ks                     *KeyboardState
 	acceleration           float64
 }
 
@@ -45,27 +46,26 @@ func (s *Ship) reset() {
 	s.explodeFrame = 0
 }
 
-//Draw ship
-func (s *Ship) Draw() {
+func (s *Ship) draw() {
 
 	if s.outOfBounds() == true && s.explodeFrame == 0 && s.exploded() == false {
 		s.explodeFrame = 1
 	}
 
 	if s.explodeFrame == 0 {
-		s.canvas.ctx.Save() // save current state
-		s.canvas.ctx.Translate(int(s.x), int(s.y))
-		s.canvas.ctx.Rotate(s.rotation) // rotate
+		s.Canvas.Ctx.Save() // save current state
+		s.Canvas.Ctx.Translate(int(s.x), int(s.y))
+		s.Canvas.Ctx.Rotate(s.rotation) // rotate
 
 		var img *js.Object
 
-		if s.ks.up {
+		if s.Ks.up {
 			img = s.shipEngineOn
 		} else {
 			img = s.ship
 		}
-		s.canvas.ctx.Call("drawImage", img, -s.radius*1.25, -s.radius*1.25, s.radius*2*1.25, s.radius*2*1.25)
-		s.canvas.ctx.Restore()
+		s.Canvas.Ctx.Call("drawImage", img, -s.radius*1.25, -s.radius*1.25, s.radius*2*1.25, s.radius*2*1.25)
+		s.Canvas.Ctx.Restore()
 	} else if s.exploded() == false {
 		s.explode()
 	}
@@ -75,21 +75,22 @@ func (s *Ship) outOfBounds() bool {
 	return s.x < 0 || s.y < 0 || s.y > 800 || s.x > 800
 }
 
-func (s *Ship) cycle() {
+//Cycle checks keyboard state and moves to corresponding coordinates
+func (s *Ship) Cycle() {
 	if s.explodeFrame == 0 {
 		oposite := math.Sin(s.rotation) * s.acceleration
 		adjacent := math.Cos(s.rotation) * s.acceleration
 
-		if s.ks.up {
+		if s.Ks.up {
 			s.ySpeed -= adjacent
 			s.xSpeed += oposite
 		}
 
-		if s.ks.left {
+		if s.Ks.left {
 			s.rotationalSpeed = s.rotationalSpeed - s.rotationalAcceleration
 		}
 
-		if s.ks.right {
+		if s.Ks.right {
 			s.rotationalSpeed = s.rotationalSpeed + s.rotationalAcceleration
 		}
 
