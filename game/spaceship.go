@@ -46,7 +46,8 @@ func (s *Ship) reset() {
 	s.explodeFrame = 0
 }
 
-func (s *Ship) draw() {
+//Draw checks if out of bounds and exploded if needed
+func (s *Ship) Draw() {
 
 	if s.outOfBounds() == true && s.explodeFrame == 0 && s.exploded() == false {
 		s.explodeFrame = 1

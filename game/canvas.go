@@ -1,16 +1,22 @@
 package game
 
 import (
+	"math"
 	"math/rand"
 
 	"github.com/gopherjs/gopherjs/js"
 	"honnef.co/go/js/dom"
 )
 
+type Sprite interface {
+	Draw()
+}
+
 //Canvas holds all items to be drawn along with the state of the current level and context. Holds logic to generate items
 type Canvas struct {
 	Ctx       *dom.CanvasRenderingContext2D
 	Ship      Ship
+	Sprites   []Sprite
 	asteroids []*Asteroid
 	explosion *js.Object
 	wormhole  Wormhole
@@ -43,12 +49,18 @@ func (c *Canvas) createAsteroids() {
 			if x > 750 && y > 750 {
 				continue
 			}
+
 			a := Asteroid{}
 			a.img = img
 			a.Canvas = c
 			a.radius = (rand.Float64() + 0.25) * 50
 			a.y = y
 			a.x = x
+
+			var s Sprite
+			s = &a
+
+			c.Sprites = append(c.Sprites, s)
 			c.asteroids = append(c.asteroids, &a)
 		}
 	}
@@ -69,6 +81,9 @@ func (c *Canvas) Initialize() {
 	c.wormhole = Wormhole{}
 	c.wormhole.canvas = c
 	c.wormhole.init()
+	var wSprite Sprite
+	wSprite = &c.wormhole
+	c.Sprites = append(c.Sprites, wSprite)
 }
 
 //Draw checks for intersecting items then draws them on the canvas
@@ -77,10 +92,20 @@ func (c *Canvas) Draw() {
 		c.levelUp()
 	}
 	c.Ctx.ClearRect(0, 0, int(c.Width), int(c.Height))
-	c.Ship.draw()
-	c.wormhole.draw()
+
 	for _, a := range c.asteroids {
 		a.intersects(&c.Ship)
-		a.draw()
 	}
+
+	for _, s := range c.Sprites {
+		s.Draw()
+	}
+}
+
+func intersects(x1 float64, y1 float64, r1 float64, x2 float64, y2 float64, r2 float64) bool {
+	xDistance := math.Abs(x1 - x2)
+	yDistance := math.Abs(y1 - y2)
+	hypot := math.Hypot(xDistance, yDistance)
+	distance := hypot - (r1 + r2)
+	return distance < 0
 }
