@@ -20,7 +20,7 @@ func initialize(e dom.Event) {
 	ship.Canvas = &canvas
 	canvas.Ship = ship
 	var sSprite game.Sprite
-	sSprite = &ship
+	sSprite = &canvas.Ship
 	canvas.Sprites = append(canvas.Sprites, sSprite)
 	canvas.Initialize()
 
