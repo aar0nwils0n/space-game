@@ -1,6 +1,8 @@
 package game
 
 import (
+	"math"
+
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -11,23 +13,25 @@ type Asteroid struct {
 	img   *js.Object
 }
 
-func (a *Asteroid) intersects(s *Ship) bool {
-	intersecting := intersects(a.x, a.y, a.radius, s.x, s.y, s.radius)
+func (a *Asteroid) intersects(ship *Ship) bool {
+	xDistance := math.Abs(a.x - ship.x)
+	yDistance := math.Abs(a.y - ship.y)
+	hypot := math.Hypot(xDistance, yDistance)
+	distance := hypot - a.radius - ship.radius
 
-	if intersecting {
+	if distance < 0 {
 		if a.explodeFrame == 0 {
 			a.explodeFrame = 1
 		}
-		if s.explodeFrame == 0 {
-			s.explodeFrame = 1
+		if ship.explodeFrame == 0 {
+			ship.explodeFrame = 1
 		}
 	}
 
-	return intersecting
+	return distance < 0
 }
 
-//Draws asteroid on canvas and progresses explosion if nessecary
-func (a *Asteroid) Draw() {
+func (a *Asteroid) draw() {
 	if a.explodeFrame == 0 {
 		a.Canvas.Ctx.Call("drawImage", a.img, a.x-a.radius, a.y-a.radius, a.radius*2, a.radius*2)
 	} else if a.exploded() == false {

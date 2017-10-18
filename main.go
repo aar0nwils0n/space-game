@@ -19,9 +19,6 @@ func initialize(e dom.Event) {
 	ship := game.Ship{Ks: &keyboardState}
 	ship.Canvas = &canvas
 	canvas.Ship = ship
-	var sSprite game.Sprite
-	sSprite = &ship
-	canvas.Sprites = append(canvas.Sprites, sSprite)
 	canvas.Initialize()
 
 	dom.GetWindow().SetInterval(func() {

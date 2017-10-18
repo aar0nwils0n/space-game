@@ -1,6 +1,8 @@
 package game
 
 import (
+	"math"
+
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -15,7 +17,11 @@ type Wormhole struct {
 }
 
 func (w *Wormhole) intersects(s *Ship) bool {
-	return intersects(w.x, w.y, w.radius, s.x, s.y, s.radius)
+	xDistance := math.Abs(w.x - s.x)
+	yDistance := math.Abs(w.y - s.y)
+	hypot := math.Hypot(xDistance, yDistance)
+	distance := hypot - (w.radius + s.radius)
+	return distance < 0
 }
 
 func (w *Wormhole) init() {
@@ -26,8 +32,7 @@ func (w *Wormhole) init() {
 	w.img.Set("src", "./assets/images/wormhole.png")
 }
 
-//Draw and rotate wormhole
-func (w *Wormhole) Draw() {
+func (w *Wormhole) draw() {
 	w.canvas.Ctx.Save() // save current state
 	w.canvas.Ctx.Translate(int(w.x), int(w.y))
 	w.canvas.Ctx.Rotate(w.rotation) // rotate
