@@ -1,8 +1,6 @@
 package game
 
 import (
-	"math"
-
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -14,12 +12,9 @@ type Asteroid struct {
 }
 
 func (a *Asteroid) intersects(ship *Ship) bool {
-	xDistance := math.Abs(a.x - ship.x)
-	yDistance := math.Abs(a.y - ship.y)
-	hypot := math.Hypot(xDistance, yDistance)
-	distance := hypot - a.radius - ship.radius
+	intersects := intersects(a.x, a.y, a.radius, ship.x, ship.y, ship.radius)
 
-	if distance < 0 {
+	if intersects {
 		if a.explodeFrame == 0 {
 			a.explodeFrame = 1
 		}
@@ -28,7 +23,7 @@ func (a *Asteroid) intersects(ship *Ship) bool {
 		}
 	}
 
-	return distance < 0
+	return intersects
 }
 
 func (a *Asteroid) draw() {

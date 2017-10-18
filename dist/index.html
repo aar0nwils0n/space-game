@@ -10,14 +10,21 @@
                 position: absolute;
             }
 
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+
             canvas {
                 background: url(./assets/images/space.jpg);
                 display: block;
+                background-size: cover;
                 margin: 0 auto;
             }
         </style>
     </head>
-    <body>
-        <canvas id="game-canvas" width="800" height="800"></canvas>
+    <body id="game-body">
+        <canvas id="game-canvas"></canvas>
     </body>
 </html>
