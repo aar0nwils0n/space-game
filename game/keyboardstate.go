@@ -1,8 +1,6 @@
 package game
 
 import (
-	"fmt"
-
 	"honnef.co/go/js/dom"
 )
 
@@ -17,7 +15,6 @@ type KeyboardState struct {
 //HandleKeyDown responds to event listener by settings the appropriate key state to true
 func (s *KeyboardState) HandleKeyDown(event dom.Event) {
 	keyCode := event.(*dom.KeyboardEvent).KeyCode
-	fmt.Println(keyCode)
 	if keyCode == 37 {
 		s.left = true
 	}

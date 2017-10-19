@@ -9,13 +9,15 @@ import (
 
 func TestOutofBounds(t *testing.T) {
 	assert := assert.New(t)
+	canvas := Canvas{vh: 1}
 	s := Ship{}
+	s.Canvas = &canvas
 	s.x = 0
 	s.y = 0
 	assert.Equal(s.outOfBounds(), false)
 
-	s.x = 800
-	s.y = 800
+	s.x = 100 * s.Canvas.vh
+	s.y = 100 * s.Canvas.vh
 	assert.Equal(s.outOfBounds(), false)
 
 	s.x = -1
@@ -25,11 +27,11 @@ func TestOutofBounds(t *testing.T) {
 	s.y = -1
 	assert.Equal(s.outOfBounds(), true)
 
-	s.y = 801
+	s.y = 100*s.Canvas.vh + 1
 	assert.Equal(s.outOfBounds(), true)
 
 	s.y = 0
-	s.x = 801
+	s.x = 100*s.Canvas.vh + 1
 	assert.Equal(s.outOfBounds(), true)
 
 }
@@ -42,8 +44,9 @@ func TestShipCycle(t *testing.T) {
 	//It should turn around
 	ks.up = true
 	ship.Cycle()
-	assert.Equal(ship.y, ship.acceleration)
+	assert.Equal(ship.y, -ship.acceleration)
 	ship.rotation = math.Pi //180 deg
+	ship.Cycle()
 	ship.Cycle()
 	assert.Equal(ship.y, float64(0))
 
@@ -53,10 +56,10 @@ func TestShipCycle(t *testing.T) {
 	ship.Cycle()
 	ship.Cycle()
 	ship.Cycle()
-	assert.Equal(ship.ySpeed, ship.acceleration*3)
-	assert.Equal(ship.y, ship.acceleration+ship.acceleration*2+ship.acceleration*3)
+	assert.Equal(ship.ySpeed, -ship.acceleration*3)
+	assert.Equal(ship.y, -ship.acceleration-ship.acceleration*2-ship.acceleration*3)
 
-	//It should accelerate up and to the left
+	//It should accelerate up and to the right
 	ship.ySpeed = 0
 	ship.y = 0
 	ship.rotation = math.Pi / 4

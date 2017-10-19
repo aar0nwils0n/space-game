@@ -1,13 +1,14 @@
-package game 
+package game
 
 import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 
 func TestWormholeIntersects(t *testing.T) {
 	assert := assert.New(t)
-	
+
 	w := Wormhole{}
 	w.radius = 100
 	w.x = 0
@@ -20,13 +21,12 @@ func TestWormholeIntersects(t *testing.T) {
 
 	assert.Equal(w.intersects(&s), false)
 
-
 	s.x = 199
 	assert.Equal(w.intersects(&s), true)
 
 	s.x = 0
 	s.y = 199
-	
+
 	assert.Equal(w.intersects(&s), true)
 
 	s.x = 0
