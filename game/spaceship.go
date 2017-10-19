@@ -71,14 +71,13 @@ func (s *Ship) Draw() {
 	} else if s.exploded() == false {
 		s.explode()
 	} else {
-		s.showReset()
+		showReset(s.Canvas.level + 1)
 	}
 }
 
-func (s *Ship) showReset() {
+func showReset(level int) {
 	dom.GetWindow().Document().GetElementByID("reset-overlay").SetAttribute("class", "reset-overlay")
-	dom.GetWindow().Document().GetElementByID("level").SetInnerHTML(strconv.Itoa(s.Canvas.level + 1))
-
+	dom.GetWindow().Document().GetElementByID("level").SetInnerHTML(strconv.Itoa(level))
 }
 
 func (s *Ship) outOfBounds() bool {
