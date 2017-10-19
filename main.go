@@ -33,4 +33,10 @@ func initialize(e dom.Event) {
 		canvas.Draw()
 		canvas.Ship.Cycle()
 	}, 50)
+
+	reset := dom.GetWindow().Document().GetElementByID("reset")
+	reset.AddEventListener("click", true, func(e dom.Event) {
+		canvas.Reset()
+		dom.GetWindow().Document().GetElementByID("reset-overlay").SetAttribute("class", "reset-overlay hidden")
+	})
 }

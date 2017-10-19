@@ -2,6 +2,7 @@ package game
 
 import (
 	"math"
+	"strconv"
 
 	"github.com/gopherjs/gopherjs/js"
 	"honnef.co/go/js/dom"
@@ -46,6 +47,7 @@ func (s *Ship) reset() {
 	s.explodeFrame = 0
 }
 
+//Draw and exploded ship if needed
 func (s *Ship) Draw() {
 
 	if s.outOfBounds() == true && s.explodeFrame == 0 && s.exploded() == false {
@@ -68,7 +70,15 @@ func (s *Ship) Draw() {
 		s.Canvas.Ctx.Restore()
 	} else if s.exploded() == false {
 		s.explode()
+	} else {
+		s.showReset()
 	}
+}
+
+func (s *Ship) showReset() {
+	dom.GetWindow().Document().GetElementByID("reset-overlay").SetAttribute("class", "reset-overlay")
+	dom.GetWindow().Document().GetElementByID("level").SetInnerHTML(strconv.Itoa(s.Canvas.level + 1))
+
 }
 
 func (s *Ship) outOfBounds() bool {

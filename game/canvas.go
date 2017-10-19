@@ -18,7 +18,7 @@ type Canvas struct {
 	Sprites   []Sprite
 	Width     float64
 	Height    float64
-	level     float64
+	level     int
 	vh        float64
 }
 
@@ -34,15 +34,15 @@ func (c *Canvas) createAsteroids() {
 	img := js.Global.Get("Image").New()
 	img.Set("src", imageURL)
 
-	for i := 0; i < int(number); i++ {
-		for j := 0; j < int(number); j++ {
+	for i := 0; i < number; i++ {
+		for j := 0; j < number; j++ {
 
 			if rand.Float64() > 0.5 {
 				continue
 			}
 
-			x := float64(c.Height)/number*float64(j) - 12*c.vh + rand.Float64()*24*c.vh
-			y := float64(c.Height)/number*float64(i) - 12*c.vh + rand.Float64()*24*c.vh
+			x := float64(c.Height)/float64(number)*float64(j) - 12*c.vh + rand.Float64()*24*c.vh
+			y := float64(c.Height)/float64(number)*float64(i) - 12*c.vh + rand.Float64()*24*c.vh
 
 			if x < 15*c.vh && y < 15*c.vh {
 				continue
@@ -73,6 +73,7 @@ func (c *Canvas) levelUp() {
 
 //Initialize creates all elements within canvas
 func (c *Canvas) Initialize() {
+	c.level = 0
 	c.vh = c.Height / 100
 	c.Ship.Initialize()
 	c.createAsteroids()
@@ -84,6 +85,17 @@ func (c *Canvas) Initialize() {
 	var wSprite Sprite
 	wSprite = &c.wormhole
 	c.Sprites = append(c.Sprites, wSprite)
+}
+
+//Reset the canvas state
+func (c *Canvas) Reset() {
+	c.asteroids = nil
+	c.Sprites = nil
+	c.level = 0
+	c.Ship.reset()
+	c.Sprites = append(c.Sprites, &c.Ship)
+	c.Sprites = append(c.Sprites, &c.wormhole)
+	c.createAsteroids()
 }
 
 func intersects(x1 float64, y1 float64, r1 float64, x2 float64, y2 float64, r2 float64) bool {

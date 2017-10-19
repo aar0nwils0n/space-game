@@ -14,6 +14,9 @@
                 margin: 0;
                 padding: 0;
                 height: 100%;
+                color: white;
+                font-family: sans-serif;
+                background: black;             
             }
 
             canvas {
@@ -22,9 +25,45 @@
                 background-size: cover;
                 margin: 0 auto;
             }
+
+            .reset-overlay {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                background: rgba(0, 0, 0, 0.7);
+                text-align: center;
+            }
+
+            .reset-overlay.hidden {
+                display: none;
+            }
+
+            .reset-inner {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            button {
+                border-radius: 0.5em;
+                padding: 1em;
+                background: purple; 
+                border: 0;
+                color: white;
+                text-transform: uppercase;
+            }
         </style>
     </head>
     <body id="game-body">
+        <div class="reset-overlay hidden" id="reset-overlay">
+            <div class="reset-inner">
+                <p>You made it to level <span id="level"></span></p>
+                <button id="reset">Retry</button>
+            </div>
+        </div>
         <canvas id="game-canvas"></canvas>
     </body>
 </html>
