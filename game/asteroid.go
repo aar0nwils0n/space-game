@@ -26,7 +26,8 @@ func (a *Asteroid) intersects(ship *Ship) bool {
 	return intersects
 }
 
-func (a *Asteroid) draw() {
+//Draw an asteroid on the canvas and explode if needed
+func (a *Asteroid) Draw() {
 	if a.explodeFrame == 0 {
 		a.Canvas.Ctx.Call("drawImage", a.img, a.x-a.radius, a.y-a.radius, a.radius*2, a.radius*2)
 	} else if a.exploded() == false {

@@ -15,10 +15,16 @@ type Canvas struct {
 	asteroids []*Asteroid
 	explosion *js.Object
 	wormhole  Wormhole
+	Sprites   []Sprite
 	Width     float64
 	Height    float64
 	level     float64
 	vh        float64
+}
+
+//Sprite is an object that is drawn on the canvas
+type Sprite interface {
+	Draw()
 }
 
 // CreateAsteroids creates random asteroid field based on Canvas.level
@@ -51,6 +57,9 @@ func (c *Canvas) createAsteroids() {
 			a.radius = (rand.Float64() + 0.25) * 3 * c.vh
 			a.y = y
 			a.x = x
+			var s Sprite
+			s = &a
+			c.Sprites = append(c.Sprites, s)
 			c.asteroids = append(c.asteroids, &a)
 		}
 	}
@@ -72,6 +81,9 @@ func (c *Canvas) Initialize() {
 	c.wormhole = Wormhole{}
 	c.wormhole.canvas = c
 	c.wormhole.init()
+	var wSprite Sprite
+	wSprite = &c.wormhole
+	c.Sprites = append(c.Sprites, wSprite)
 }
 
 func intersects(x1 float64, y1 float64, r1 float64, x2 float64, y2 float64, r2 float64) bool {
@@ -84,14 +96,18 @@ func intersects(x1 float64, y1 float64, r1 float64, x2 float64, y2 float64, r2 f
 
 //Draw checks for intersecting items then draws them on the canvas
 func (c *Canvas) Draw() {
+
 	if c.wormhole.intersects(&c.Ship) == true {
 		c.levelUp()
 	}
+
 	c.Ctx.ClearRect(0, 0, int(c.Width), int(c.Height))
-	c.Ship.draw()
-	c.wormhole.draw()
+
 	for _, a := range c.asteroids {
 		a.intersects(&c.Ship)
-		a.draw()
+	}
+
+	for _, s := range c.Sprites {
+		s.Draw()
 	}
 }

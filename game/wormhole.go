@@ -26,7 +26,8 @@ func (w *Wormhole) init() {
 	w.img.Set("src", "./assets/images/wormhole.png")
 }
 
-func (w *Wormhole) draw() {
+//Draw and rotate a wormhole on the canvas
+func (w *Wormhole) Draw() {
 	w.canvas.Ctx.Save() // save current state
 	w.canvas.Ctx.Translate(int(w.x), int(w.y))
 	w.canvas.Ctx.Rotate(w.rotation) // rotate
