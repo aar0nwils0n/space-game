@@ -11,23 +11,22 @@ type Asteroid struct {
 	img   *js.Object
 }
 
-func (a *Asteroid) intersects(s *Ship) bool {
-	intersecting := intersects(a.x, a.y, a.radius, s.x, s.y, s.radius)
+func (a *Asteroid) intersects(ship *Ship) bool {
+	intersects := intersects(a.x, a.y, a.radius, ship.x, ship.y, ship.radius)
 
-	if intersecting {
+	if intersects {
 		if a.explodeFrame == 0 {
 			a.explodeFrame = 1
 		}
-		if s.explodeFrame == 0 {
-			s.explodeFrame = 1
+		if ship.explodeFrame == 0 {
+			ship.explodeFrame = 1
 		}
 	}
 
-	return intersecting
+	return intersects
 }
 
-//Draws asteroid on canvas and progresses explosion if nessecary
-func (a *Asteroid) Draw() {
+func (a *Asteroid) draw() {
 	if a.explodeFrame == 0 {
 		a.Canvas.Ctx.Call("drawImage", a.img, a.x-a.radius, a.y-a.radius, a.radius*2, a.radius*2)
 	} else if a.exploded() == false {

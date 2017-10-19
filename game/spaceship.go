@@ -25,10 +25,10 @@ type Ship struct {
 
 //Initialize creates ship with default properties
 func (s *Ship) Initialize() {
-	s.radius = 25
+	s.radius = 3 * s.Canvas.vh
 	s.rotation = math.Pi * 0.75
 	s.reset()
-	s.acceleration = 0.25
+	s.acceleration = 0.03 * s.Canvas.vh
 	s.rotationalAcceleration = 0.01
 	s.ship = js.Global.Get("Image").New()
 	s.ship.Set("src", "./assets/images/ship.svg")
@@ -37,8 +37,8 @@ func (s *Ship) Initialize() {
 }
 
 func (s *Ship) reset() {
-	s.x = 50
-	s.y = 50
+	s.x = 5 * s.Canvas.vh
+	s.y = 5 * s.Canvas.vh
 	s.rotationalSpeed = 0
 	s.rotation = math.Pi * 0.75
 	s.xSpeed = 0
@@ -46,8 +46,7 @@ func (s *Ship) reset() {
 	s.explodeFrame = 0
 }
 
-//Draw checks if out of bounds and exploded if needed
-func (s *Ship) Draw() {
+func (s *Ship) draw() {
 
 	if s.outOfBounds() == true && s.explodeFrame == 0 && s.exploded() == false {
 		s.explodeFrame = 1
@@ -73,7 +72,7 @@ func (s *Ship) Draw() {
 }
 
 func (s *Ship) outOfBounds() bool {
-	return s.x < 0 || s.y < 0 || s.y > 800 || s.x > 800
+	return s.x < 0 || s.y < 0 || s.y > 100*s.Canvas.vh || s.x > 100*s.Canvas.vh
 }
 
 //Cycle checks keyboard state and moves to corresponding coordinates

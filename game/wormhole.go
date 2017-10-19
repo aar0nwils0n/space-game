@@ -19,15 +19,14 @@ func (w *Wormhole) intersects(s *Ship) bool {
 }
 
 func (w *Wormhole) init() {
-	w.radius = 100
-	w.x = 750
-	w.y = 750
+	w.radius = 12 * w.canvas.vh
+	w.x = 90 * w.canvas.vh
+	w.y = 90 * w.canvas.vh
 	w.img = js.Global.Get("Image").New()
 	w.img.Set("src", "./assets/images/wormhole.png")
 }
 
-//Draw and rotate wormhole
-func (w *Wormhole) Draw() {
+func (w *Wormhole) draw() {
 	w.canvas.Ctx.Save() // save current state
 	w.canvas.Ctx.Translate(int(w.x), int(w.y))
 	w.canvas.Ctx.Rotate(w.rotation) // rotate

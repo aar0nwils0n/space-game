@@ -36,23 +36,23 @@ func TestOutofBounds(t *testing.T) {
 func TestShipCycle(t *testing.T) {
 	assert := assert.New(t)
 	ks := KeyboardState{}
-	ship := Ship{ks: &ks, acceleration: 0.25}
+	ship := Ship{Ks: &ks, acceleration: 0.25}
 	ship.x = 0
 	ship.y = 0
 	//It should turn around
 	ks.up = true
-	ship.cycle()
+	ship.Cycle()
 	assert.Equal(ship.y, ship.acceleration)
 	ship.rotation = math.Pi //180 deg
-	ship.cycle()
+	ship.Cycle()
 	assert.Equal(ship.y, float64(0))
 
 	//It should accelerate straight forward
 	ship.rotation = 0
 	ship.ySpeed = 0
-	ship.cycle()
-	ship.cycle()
-	ship.cycle()
+	ship.Cycle()
+	ship.Cycle()
+	ship.Cycle()
 	assert.Equal(ship.ySpeed, ship.acceleration*3)
 	assert.Equal(ship.y, ship.acceleration+ship.acceleration*2+ship.acceleration*3)
 
@@ -60,9 +60,9 @@ func TestShipCycle(t *testing.T) {
 	ship.ySpeed = 0
 	ship.y = 0
 	ship.rotation = math.Pi / 4
-	ship.cycle()
-	ship.cycle()
-	ship.cycle()
+	ship.Cycle()
+	ship.Cycle()
+	ship.Cycle()
 	totalDistance := ship.acceleration + ship.acceleration*2 + ship.acceleration*3
 	oposite := totalDistance * -math.Sin(ship.rotation)
 	adjacent := totalDistance * math.Cos(ship.rotation)
@@ -73,9 +73,9 @@ func TestShipCycle(t *testing.T) {
 	//It should increase in rotational speed
 	ship.rotation = 0
 	ks.right = true
-	ship.cycle()
-	ship.cycle()
-	ship.cycle()
+	ship.Cycle()
+	ship.Cycle()
+	ship.Cycle()
 	assert.Equal(ship.rotationalSpeed, ship.rotationalAcceleration*3)
 	assert.Equal(ship.rotation, ship.rotationalAcceleration+ship.rotationalAcceleration*2+ship.rotationalAcceleration*3)
 
