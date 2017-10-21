@@ -66,12 +66,13 @@ func (s *Ship) Draw() {
 		} else {
 			img = s.ship
 		}
-		s.Canvas.Ctx.Call("drawImage", img, -s.radius*1.25, -s.radius*1.25, s.radius*2*1.25, s.radius*2*1.25)
+		shipOverflow := 1.6
+		s.Canvas.Ctx.Call("drawImage", img, -s.radius*shipOverflow, -s.radius*shipOverflow, s.radius*2*shipOverflow, s.radius*2*shipOverflow)
 		s.Canvas.Ctx.Restore()
 	} else if s.exploded() == false {
 		s.explode()
 	} else {
-		showReset(s.Canvas.level + 1)
+		showReset(s.Canvas.Level + 1)
 	}
 }
 

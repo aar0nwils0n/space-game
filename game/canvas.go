@@ -18,7 +18,7 @@ type Canvas struct {
 	Sprites   []Sprite
 	Width     float64
 	Height    float64
-	level     int
+	Level     int
 	vh        float64
 }
 
@@ -29,7 +29,7 @@ type Sprite interface {
 
 // CreateAsteroids creates random asteroid field based on Canvas.level
 func (c *Canvas) createAsteroids() {
-	number := c.level + 3
+	number := c.Level + 4
 	imageURL := "./assets/images/asteroid.png"
 	img := js.Global.Get("Image").New()
 	img.Set("src", imageURL)
@@ -66,14 +66,13 @@ func (c *Canvas) createAsteroids() {
 }
 
 func (c *Canvas) levelUp() {
-	c.level++
-	c.Ship.reset()
-	c.createAsteroids()
+	c.Level++
+	c.Reset()
 }
 
 //Initialize creates all elements within canvas
 func (c *Canvas) Initialize() {
-	c.level = 0
+	c.Level = 0
 	c.vh = c.Height / 100
 	c.Ship.Initialize()
 	c.createAsteroids()
@@ -91,7 +90,6 @@ func (c *Canvas) Initialize() {
 func (c *Canvas) Reset() {
 	c.asteroids = nil
 	c.Sprites = nil
-	c.level = 0
 	c.Ship.reset()
 	c.Sprites = append(c.Sprites, &c.Ship)
 	c.Sprites = append(c.Sprites, &c.wormhole)
