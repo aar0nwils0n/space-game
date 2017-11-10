@@ -1,0 +1,116 @@
+.ship {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    position: absolute;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    color: white;
+    font-family: sans-serif;
+    background: black;    
+    font-family: Impact, monospace;
+    text-transform: uppercase;
+    text-align: right;
+    font-weight: bolder;
+    font-size: calc(0.75em + 0.5vw);
+}
+
+canvas {
+    background: url(./assets/images/space.jpg);
+    display: block;
+    background-size: cover;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(-50% - 5em));
+}
+
+.reset-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    z-index: 10;
+}
+
+.reset-overlay.hidden {
+    display: none;
+}
+
+.reset-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button {
+    border-radius: 0.5em;
+    padding: 1em 2em;
+    background: purple; 
+    border: 0;
+    color: white;
+    font-weight: bolder;
+    text-transform: uppercase;
+    outline: 0;
+}
+
+.controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: black;
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+
+.controls-header {
+    border-top-left-radius: 2.5em;
+    background: orange;
+    height: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+.controls-header span {
+    display: inline-block;
+    margin-right: 1.25em;
+    color: orange;
+    font-size: 2.5em;
+    line-height: 1em;
+    height: 1.25em;
+    background: black;
+    padding: 0 0.25em;
+}
+
+.controls-button {
+    width: calc(33.33% - 0.25em);
+    background: orange;
+    padding-right: 0.5em;
+    box-sizing: border-box;
+    color: black;
+    height: 3em;
+    line-height: 1.5;
+    padding-top: 1em;
+}
+
+.controls-buttons {
+    display: flex;
+    justify-content: space-between;
+    height: 3em;
+    font-size: 1.25em;
+    padding-bottom: 1em;
+}
+
+.controls-button:first-child {
+    border-bottom-left-radius: 2em;
+}

@@ -14,14 +14,21 @@ type Wormhole struct {
 	img      *js.Object
 }
 
+func createWormhole(c *Canvas) *Wormhole {
+	wormhole := Wormhole{}
+	wormhole.canvas = c
+	wormhole.init()
+	return &wormhole
+}
+
 func (w *Wormhole) intersects(s *Ship) bool {
 	return intersects(w.x, w.y, w.radius, s.x, s.y, s.radius)
 }
 
 func (w *Wormhole) init() {
-	w.radius = 12 * w.canvas.vh
-	w.x = 90 * w.canvas.vh
-	w.y = 90 * w.canvas.vh
+	w.radius = 10 * w.canvas.vh
+	w.x = 100*w.canvas.vw - w.radius
+	w.y = 100*w.canvas.vh - w.radius
 	w.img = js.Global.Get("Image").New()
 	w.img.Set("src", "./assets/images/wormhole.png")
 }

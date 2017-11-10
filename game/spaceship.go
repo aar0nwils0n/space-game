@@ -82,7 +82,7 @@ func showReset(level int) {
 }
 
 func (s *Ship) outOfBounds() bool {
-	return s.x < 0 || s.y < 0 || s.y > 100*s.Canvas.vh || s.x > 100*s.Canvas.vh
+	return s.x < 0 || s.y < 0 || s.y > 100*s.Canvas.vh || s.x > 100*s.Canvas.vw
 }
 
 //Cycle checks keyboard state and moves to corresponding coordinates

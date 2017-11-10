@@ -14,12 +14,13 @@ type Canvas struct {
 	Ship      Ship
 	asteroids []*Asteroid
 	explosion *js.Object
-	wormhole  Wormhole
+	wormhole  *Wormhole
 	Sprites   []Sprite
 	Width     float64
 	Height    float64
 	Level     int
 	vh        float64
+	vw        float64
 }
 
 //Sprite is an object that is drawn on the canvas
@@ -41,7 +42,7 @@ func (c *Canvas) createAsteroids() {
 				continue
 			}
 
-			x := float64(c.Height)/float64(number)*float64(j) - 12*c.vh + rand.Float64()*24*c.vh
+			x := float64(c.Width)/float64(number)*float64(j) - 12*c.vh + rand.Float64()*24*c.vh
 			y := float64(c.Height)/float64(number)*float64(i) - 12*c.vh + rand.Float64()*24*c.vh
 
 			if x < 15*c.vh && y < 15*c.vh {
@@ -74,15 +75,14 @@ func (c *Canvas) levelUp() {
 func (c *Canvas) Initialize() {
 	c.Level = 0
 	c.vh = c.Height / 100
+	c.vw = c.Width / 100
 	c.Ship.Initialize()
 	c.createAsteroids()
 	c.explosion = js.Global.Get("Image").New()
 	c.explosion.Set("src", "./assets/images/explosion.png")
-	c.wormhole = Wormhole{}
-	c.wormhole.canvas = c
-	c.wormhole.init()
+	c.wormhole = createWormhole(c)
 	var wSprite Sprite
-	wSprite = &c.wormhole
+	wSprite = c.wormhole
 	c.Sprites = append(c.Sprites, wSprite)
 }
 
@@ -92,7 +92,7 @@ func (c *Canvas) Reset() {
 	c.Sprites = nil
 	c.Ship.reset()
 	c.Sprites = append(c.Sprites, &c.Ship)
-	c.Sprites = append(c.Sprites, &c.wormhole)
+	c.Sprites = append(c.Sprites, c.wormhole)
 	c.createAsteroids()
 }
 

@@ -12,6 +12,36 @@ type KeyboardState struct {
 	right bool
 }
 
+//SetLeftTrue will set left property to true
+func (s *KeyboardState) SetLeftTrue(event dom.Event) {
+	s.left = true
+}
+
+//SetLeftFalse will set left property to false
+func (s *KeyboardState) SetLeftFalse(event dom.Event) {
+	s.left = false
+}
+
+//SetRightTrue will set right property to true
+func (s *KeyboardState) SetRightTrue(event dom.Event) {
+	s.right = true
+}
+
+//SetRightFalse will set right property to false
+func (s *KeyboardState) SetRightFalse(event dom.Event) {
+	s.right = false
+}
+
+//SetUpTrue will set up property to false
+func (s *KeyboardState) SetUpTrue(event dom.Event) {
+	s.up = true
+}
+
+//SetUpFalse will set up property to true
+func (s *KeyboardState) SetUpFalse(event dom.Event) {
+	s.up = false
+}
+
 //HandleKeyDown responds to event listener by settings the appropriate key state to true
 func (s *KeyboardState) HandleKeyDown(event dom.Event) {
 	keyCode := event.(*dom.KeyboardEvent).KeyCode
@@ -23,9 +53,6 @@ func (s *KeyboardState) HandleKeyDown(event dom.Event) {
 	}
 	if keyCode == 39 {
 		s.right = true
-	}
-	if keyCode == 40 {
-		s.down = true
 	}
 }
 
@@ -40,8 +67,5 @@ func (s *KeyboardState) HandleKeyUp(event dom.Event) {
 	}
 	if keyCode == 39 {
 		s.right = false
-	}
-	if keyCode == 40 {
-		s.down = false
 	}
 }
