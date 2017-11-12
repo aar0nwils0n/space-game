@@ -26,7 +26,7 @@ type Ship struct {
 
 //Initialize creates ship with default properties
 func (s *Ship) Initialize() {
-	s.radius = 3 * s.Canvas.vh
+	s.radius = 4 * s.Canvas.vh
 	s.rotation = math.Pi * 0.75
 	s.reset()
 	s.acceleration = 0.03 * s.Canvas.vh
@@ -51,7 +51,7 @@ func (s *Ship) reset() {
 func (s *Ship) Draw() {
 
 	if s.outOfBounds() == true && s.explodeFrame == 0 && s.exploded() == false {
-		s.explodeFrame = 1
+		s.startExplosion()
 	}
 
 	if s.explodeFrame == 0 {

@@ -14,23 +14,19 @@ type Wormhole struct {
 	img      *js.Object
 }
 
-func createWormhole(c *Canvas) *Wormhole {
+func createWormhole(c *Canvas, x float64, y float64, rad float64, img string) *Wormhole {
 	wormhole := Wormhole{}
 	wormhole.canvas = c
-	wormhole.init()
+	wormhole.radius = rad * wormhole.canvas.vh
+	wormhole.x = x*wormhole.canvas.vw - wormhole.radius
+	wormhole.y = y*wormhole.canvas.vh - wormhole.radius
+	wormhole.img = js.Global.Get("Image").New()
+	wormhole.img.Set("src", img)
 	return &wormhole
 }
 
 func (w *Wormhole) intersects(s *Ship) bool {
 	return intersects(w.x, w.y, w.radius, s.x, s.y, s.radius)
-}
-
-func (w *Wormhole) init() {
-	w.radius = 10 * w.canvas.vh
-	w.x = 100*w.canvas.vw - w.radius
-	w.y = 100*w.canvas.vh - w.radius
-	w.img = js.Global.Get("Image").New()
-	w.img.Set("src", "./assets/images/wormhole.png")
 }
 
 //Draw and rotate a wormhole on the canvas

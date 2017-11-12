@@ -15,6 +15,7 @@ type Canvas struct {
 	asteroids []*Asteroid
 	explosion *js.Object
 	wormhole  *Wormhole
+	blackhole *Wormhole
 	Sprites   []Sprite
 	Width     int
 	Height    int
@@ -35,10 +36,10 @@ func (c *Canvas) createAsteroids() {
 	img.Set("src", imageURL)
 
 	var distance int
-	if c.Level > 10 {
+	if c.Level > 13 {
 		distance = int(Round(14 * c.vh))
 	} else {
-		distance = int(Round(float64(25-c.Level) * c.vh))
+		distance = int(Round(float64(28-c.Level) * c.vh))
 	}
 
 	for i := 0; i <= c.Width; i = i + distance {
@@ -85,10 +86,10 @@ func (c *Canvas) Initialize() {
 	c.createAsteroids()
 	c.explosion = js.Global.Get("Image").New()
 	c.explosion.Set("src", "./assets/images/explosion.png")
-	c.wormhole = createWormhole(c)
-	var wSprite Sprite
-	wSprite = c.wormhole
-	c.Sprites = append(c.Sprites, wSprite)
+	c.wormhole = createWormhole(c, 100, 100, 10, "./assets/images/wormhole.png")
+	c.Sprites = append(c.Sprites, c.wormhole)
+	c.blackhole = createWormhole(c, -10, -10, 10, "./assets/images/blackhole.png")
+	c.Sprites = append(c.Sprites, c.blackhole)
 }
 
 //Reset the canvas state
@@ -96,8 +97,10 @@ func (c *Canvas) Reset() {
 	c.asteroids = nil
 	c.Sprites = nil
 	c.Ship.reset()
+	c.blackhole.radius = 10 * c.vh
 	c.Sprites = append(c.Sprites, &c.Ship)
 	c.Sprites = append(c.Sprites, c.wormhole)
+	c.Sprites = append(c.Sprites, c.blackhole)
 	c.createAsteroids()
 }
 
@@ -116,10 +119,21 @@ func (c *Canvas) Draw() {
 		c.levelUp()
 	}
 
+	if c.blackhole.intersects(&c.Ship) == true && c.Ship.explodeFrame == 0 {
+		c.Ship.startExplosion()
+	}
+
+	c.blackhole.radius = c.blackhole.radius + 0.025*c.vh*float64(c.Level+1)
+	c.blackhole.x = c.blackhole.x + 0.025*c.vh*float64(c.Level+1)
+	c.blackhole.x = c.blackhole.y + 0.025*c.vh*float64(c.Level+1)
+
 	c.Ctx.ClearRect(0, 0, int(c.Width), int(c.Height))
 
 	for _, a := range c.asteroids {
 		a.intersects(&c.Ship)
+		if intersects(c.blackhole.x, c.blackhole.y, c.blackhole.radius, a.x, a.y, a.radius) == true && a.explodeFrame == 0 {
+			a.startExplosion()
+		}
 	}
 
 	for _, s := range c.Sprites {

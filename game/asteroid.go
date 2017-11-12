@@ -16,10 +16,10 @@ func (a *Asteroid) intersects(ship *Ship) bool {
 
 	if intersects {
 		if a.explodeFrame == 0 {
-			a.explodeFrame = 1
+			a.startExplosion()
 		}
 		if ship.explodeFrame == 0 {
-			ship.explodeFrame = 1
+			ship.startExplosion()
 		}
 	}
 
