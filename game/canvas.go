@@ -16,8 +16,8 @@ type Canvas struct {
 	explosion *js.Object
 	wormhole  *Wormhole
 	Sprites   []Sprite
-	Width     float64
-	Height    float64
+	Width     int
+	Height    int
 	Level     int
 	vh        float64
 	vw        float64
@@ -30,32 +30,37 @@ type Sprite interface {
 
 // CreateAsteroids creates random asteroid field based on Canvas.level
 func (c *Canvas) createAsteroids() {
-	number := c.Level + 4
 	imageURL := "./assets/images/asteroid.png"
 	img := js.Global.Get("Image").New()
 	img.Set("src", imageURL)
 
-	for i := 0; i < number; i++ {
-		for j := 0; j < number; j++ {
+	var distance int
+	if c.Level > 10 {
+		distance = int(Round(14 * c.vh))
+	} else {
+		distance = int(Round(float64(25-c.Level) * c.vh))
+	}
 
+	for i := 0; i <= c.Width; i = i + distance {
+		for j := 0; j <= c.Height; j = j + distance {
 			if rand.Float64() > 0.5 {
 				continue
 			}
 
-			x := float64(c.Width)/float64(number)*float64(j) - 12*c.vh + rand.Float64()*24*c.vh
-			y := float64(c.Height)/float64(number)*float64(i) - 12*c.vh + rand.Float64()*24*c.vh
+			x := float64(i) - 10*c.vh + rand.Float64()*20*c.vh
+			y := float64(j) - 10*c.vh + rand.Float64()*20*c.vh
 
-			if x < 15*c.vh && y < 15*c.vh {
+			if x < 20*c.vh && y < 20*c.vh {
 				continue
 			}
 
-			if x > 85*c.vh && y > 85*c.vh {
+			if x > float64(c.Width)-25*c.vh && y > float64(c.Height)-25*c.vh {
 				continue
 			}
 			a := Asteroid{}
 			a.img = img
 			a.Canvas = c
-			a.radius = (rand.Float64() + 0.25) * 3 * c.vh
+			a.radius = (rand.Float64()+0.25)*2.5*c.vh + 1.5*c.vh
 			a.y = y
 			a.x = x
 			var s Sprite
@@ -74,8 +79,8 @@ func (c *Canvas) levelUp() {
 //Initialize creates all elements within canvas
 func (c *Canvas) Initialize() {
 	c.Level = 0
-	c.vh = c.Height / 100
-	c.vw = c.Width / 100
+	c.vh = float64(c.Height) / 100
+	c.vw = float64(c.Width) / 100
 	c.Ship.Initialize()
 	c.createAsteroids()
 	c.explosion = js.Global.Get("Image").New()

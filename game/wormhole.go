@@ -38,7 +38,9 @@ func (w *Wormhole) Draw() {
 	w.canvas.Ctx.Save() // save current state
 	w.canvas.Ctx.Translate(int(w.x), int(w.y))
 	w.canvas.Ctx.Rotate(w.rotation) // rotate
-	w.canvas.Ctx.Call("drawImage", w.img, -w.radius*1.5, -w.radius*1.5, w.radius*2*1.5, w.radius*2*1.5)
+	oneAndHalfRad := Round(w.radius * 1.5)
+	threeRad := Round(w.radius * 3)
+	w.canvas.Ctx.Call("drawImage", w.img, -oneAndHalfRad, -oneAndHalfRad, threeRad, threeRad)
 	w.canvas.Ctx.Restore()
 	w.rotation += 0.1
 }

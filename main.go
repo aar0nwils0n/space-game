@@ -26,7 +26,7 @@ func createGameCanvas() *game.Canvas {
 	domCanvas.SetAttribute("width", strconv.FormatFloat(width, 'f', 6, 64))
 	domCanvas.SetAttribute("height", strconv.FormatFloat(height, 'f', 6, 64))
 	ctx := domCanvas.GetContext2d()
-	canvas := game.Canvas{Ctx: ctx, Height: height, Width: width}
+	canvas := game.Canvas{Ctx: ctx, Height: int(height), Width: int(width)}
 	ship := game.Ship{Ks: &keyboardState}
 	ship.Canvas = &canvas
 	canvas.Ship = ship
