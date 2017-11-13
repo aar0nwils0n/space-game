@@ -5,13 +5,14 @@ import (
 	"math/rand"
 
 	"github.com/gopherjs/gopherjs/js"
+	"github.com/haronius/space-ship/audio"
 	"honnef.co/go/js/dom"
 )
 
 //Canvas holds all items to be drawn along with the state of the current level and context. Holds logic to generate items
 type Canvas struct {
 	Ctx       *dom.CanvasRenderingContext2D
-	Ship      Ship
+	Ship      *Ship
 	asteroids []*Asteroid
 	explosion *js.Object
 	wormhole  *Wormhole
@@ -22,6 +23,7 @@ type Canvas struct {
 	Level     int
 	vh        float64
 	vw        float64
+	audio     *audio.Store
 }
 
 //Sprite is an object that is drawn on the canvas
@@ -34,6 +36,8 @@ func (c *Canvas) createAsteroids() {
 	imageURL := "./assets/images/asteroid.png"
 	img := js.Global.Get("Image").New()
 	img.Set("src", imageURL)
+	audio := audio.CreateStore()
+	audio.Add("explosion", "./assets/audio/explosion-short.mp3")
 
 	var distance int
 	if c.Level > 13 {
@@ -68,11 +72,13 @@ func (c *Canvas) createAsteroids() {
 			s = &a
 			c.Sprites = append(c.Sprites, s)
 			c.asteroids = append(c.asteroids, &a)
+			a.audio = &audio
 		}
 	}
 }
 
 func (c *Canvas) levelUp() {
+	c.audio.Files["whoosh"].Play()
 	c.Level++
 	c.Reset()
 }
@@ -90,6 +96,9 @@ func (c *Canvas) Initialize() {
 	c.Sprites = append(c.Sprites, c.wormhole)
 	c.blackhole = createWormhole(c, -10, -10, 10, "./assets/images/blackhole.png")
 	c.Sprites = append(c.Sprites, c.blackhole)
+	audio := audio.CreateStore()
+	audio.Add("whoosh", "./assets/audio/whoosh.mp3")
+	c.audio = &audio
 }
 
 //Reset the canvas state
@@ -98,7 +107,7 @@ func (c *Canvas) Reset() {
 	c.Sprites = nil
 	c.Ship.reset()
 	c.blackhole.radius = 10 * c.vh
-	c.Sprites = append(c.Sprites, &c.Ship)
+	c.Sprites = append(c.Sprites, c.Ship)
 	c.Sprites = append(c.Sprites, c.wormhole)
 	c.Sprites = append(c.Sprites, c.blackhole)
 	c.createAsteroids()
@@ -115,11 +124,11 @@ func intersects(x1 float64, y1 float64, r1 float64, x2 float64, y2 float64, r2 f
 //Draw checks for intersecting items then draws them on the canvas
 func (c *Canvas) Draw() {
 
-	if c.wormhole.intersects(&c.Ship) == true {
+	if c.wormhole.intersects(c.Ship) == true {
 		c.levelUp()
 	}
 
-	if c.blackhole.intersects(&c.Ship) == true && c.Ship.explodeFrame == 0 {
+	if c.blackhole.intersects(c.Ship) == true && c.Ship.explodeFrame == 0 {
 		c.Ship.startExplosion()
 	}
 
@@ -130,7 +139,7 @@ func (c *Canvas) Draw() {
 	c.Ctx.ClearRect(0, 0, int(c.Width), int(c.Height))
 
 	for _, a := range c.asteroids {
-		a.intersects(&c.Ship)
+		a.intersects(c.Ship)
 		if intersects(c.blackhole.x, c.blackhole.y, c.blackhole.radius, a.x, a.y, a.radius) == true && a.explodeFrame == 0 {
 			a.startExplosion()
 		}

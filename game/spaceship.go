@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gopherjs/gopherjs/js"
+	"github.com/haronius/space-ship/audio"
 	"honnef.co/go/js/dom"
 )
 
@@ -35,6 +36,10 @@ func (s *Ship) Initialize() {
 	s.ship.Set("src", "./assets/images/ship.svg")
 	s.shipEngineOn = js.Global.Get("Image").New()
 	s.shipEngineOn.Set("src", "./assets/images/ship-engine-on.svg")
+	audio := audio.CreateStore()
+	audio.Add("thruster", "./assets/audio/thruster.mp3")
+	audio.Add("explosion", "./assets/audio/explosion.mp3")
+	s.audio = &audio
 }
 
 func (s *Ship) reset() {
@@ -87,8 +92,25 @@ func (s *Ship) outOfBounds() bool {
 	return s.x < 0 || s.y < 0 || s.y > 100*s.Canvas.vh || s.x > 100*s.Canvas.vw
 }
 
+func (s *Ship) handleSound() {
+	thruster := s.audio.Files["thruster"]
+	if s.Ks.up && !thruster.Playing && !s.exploded() {
+		thruster.StartLoop(1.5, 9)
+	}
+
+	if !s.Ks.up && thruster.Playing {
+		thruster.StopLoop()
+	}
+
+	if s.exploded() && thruster.Playing {
+		thruster.StopLoop()
+	}
+}
+
 //Cycle checks keyboard state and moves to corresponding coordinates
 func (s *Ship) Cycle() {
+
+	s.handleSound()
 	if s.explodeFrame == 0 {
 		oposite := math.Sin(s.rotation) * s.acceleration
 		adjacent := math.Cos(s.rotation) * s.acceleration

@@ -1,5 +1,9 @@
 package game
 
+import (
+	"github.com/haronius/space-ship/audio"
+)
+
 //Exploder draws a progressing explison upon the canvas
 type Exploder struct {
 	Canvas       *Canvas
@@ -7,6 +11,7 @@ type Exploder struct {
 	y            float64
 	radius       float64
 	explodeFrame float64
+	audio        *audio.Store
 }
 
 func (e *Exploder) exploded() bool {
@@ -14,6 +19,8 @@ func (e *Exploder) exploded() bool {
 }
 
 func (e *Exploder) startExplosion() {
+	file := e.audio.Files["explosion"]
+	file.Play()
 	e.explodeFrame = 1
 }
 

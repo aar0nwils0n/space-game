@@ -29,9 +29,9 @@ func createGameCanvas() *game.Canvas {
 	canvas := game.Canvas{Ctx: ctx, Height: int(height), Width: int(width)}
 	ship := game.Ship{Ks: &keyboardState}
 	ship.Canvas = &canvas
-	canvas.Ship = ship
+	canvas.Ship = &ship
 	var sSprite game.Sprite
-	sSprite = &canvas.Ship
+	sSprite = canvas.Ship
 	canvas.Sprites = append(canvas.Sprites, sSprite)
 	return &canvas
 }
