@@ -46,6 +46,11 @@ func (c *Canvas) createAsteroids() {
 		distance = int(Round(float64(28-c.Level) * c.vh))
 	}
 
+	x := 50*c.vw - 5*c.vw + rand.Float64()*10*c.vw
+	y := 50*c.vh - 5*c.vh + rand.Float64()*10*c.vh
+
+	c.addAsteroid(x, y, img, &audio)
+
 	for i := 0; i <= c.Width; i = i + distance {
 		for j := 0; j <= c.Height; j = j + distance {
 			if rand.Float64() > 0.5 {
@@ -62,19 +67,24 @@ func (c *Canvas) createAsteroids() {
 			if x > float64(c.Width)-25*c.vh && y > float64(c.Height)-25*c.vh {
 				continue
 			}
-			a := Asteroid{}
-			a.img = img
-			a.Canvas = c
-			a.radius = (rand.Float64()+0.25)*2.5*c.vh + 1.5*c.vh
-			a.y = y
-			a.x = x
-			var s Sprite
-			s = &a
-			c.Sprites = append(c.Sprites, s)
-			c.asteroids = append(c.asteroids, &a)
-			a.audio = &audio
+
+			c.addAsteroid(x, y, img, &audio)
 		}
 	}
+}
+
+func (c *Canvas) addAsteroid(x float64, y float64, img *js.Object, audio *audio.Store) {
+	a := Asteroid{}
+	a.img = img
+	a.Canvas = c
+	a.radius = (rand.Float64()+0.25)*2.5*c.vh + 1.5*c.vh
+	a.y = y
+	a.x = x
+	var s Sprite
+	s = &a
+	c.Sprites = append(c.Sprites, s)
+	c.asteroids = append(c.asteroids, &a)
+	a.audio = audio
 }
 
 func (c *Canvas) levelUp() {

@@ -9,15 +9,18 @@
         <title>Space Game</title>
     </head>
     <body id="game-body">
+        <span class="pause" id="pause"></span>
         <div class="reset-overlay hidden" id="reset-overlay">
             <div class="reset-inner">
                 <p>You made it to level <span id="level"></span></p>
                 <button id="reset">Retry</button>
             </div>
         </div>
-        <canvas id="game-canvas"></canvas>
+        <div class="canvas-wrapper">
+            <canvas id="game-canvas"></canvas>
+        </div>
         <div class="controls" id="controls">
-            <div class="controls-header"><span>Space Game</span></div>
+            <div class="controls-header"><span class="title">Space Game</span></div>
             <div class="controls-buttons">
                 <div class="controls-button" id="left">Port</div>
                 <div class="controls-button" id="up">Thrusters</div>

@@ -25,7 +25,7 @@ func (e *Exploder) startExplosion() {
 }
 
 func (e *Exploder) explode() {
-	explosionSize := e.radius * e.explodeFrame * 2
+	explosionSize := e.radius*2 + e.explodeFrame*e.Canvas.vh*5
 	e.Canvas.Ctx.Call("drawImage", e.Canvas.explosion, e.x-explosionSize/2, e.y-explosionSize/2, explosionSize, explosionSize)
 	e.explodeFrame++
 }

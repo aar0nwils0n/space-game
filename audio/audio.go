@@ -53,6 +53,12 @@ func (f *File) loop(start float64, end float64) {
 	}, int(end-start)*1000)
 }
 
+//LoopFull loops the full length of the audio
+func (f *File) LoopFull() {
+	f.el.SetAttribute("loop", "true")
+	f.el.Play()
+}
+
 //StopLoop stops the audo from playing and resets the timeout and currentTime
 func (f *File) StopLoop() {
 	f.Playing = false
