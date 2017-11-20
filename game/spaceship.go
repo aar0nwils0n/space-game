@@ -33,9 +33,9 @@ func (s *Ship) Initialize() {
 	s.acceleration = 0.03 * s.Canvas.vh
 	s.rotationalAcceleration = 0.01
 	s.ship = js.Global.Get("Image").New()
-	s.ship.Set("src", "./assets/images/ship.svg")
+	s.ship.Set("src", "./assets/images/ship.png")
 	s.shipEngineOn = js.Global.Get("Image").New()
-	s.shipEngineOn.Set("src", "./assets/images/ship-engine-on.svg")
+	s.shipEngineOn.Set("src", "./assets/images/ship-engine-on.png")
 	audio := audio.CreateStore()
 	audio.Add("thruster", "./assets/audio/thruster.mp3")
 	audio.Add("explosion", "./assets/audio/explosion.mp3")
@@ -94,15 +94,11 @@ func (s *Ship) outOfBounds() bool {
 
 func (s *Ship) handleSound() {
 	thruster := s.audio.Files["thruster"]
-	if s.Ks.up && !thruster.Playing && !s.exploded() {
+	if s.Ks.up && !s.exploded() {
 		thruster.StartLoop(1.5, 9)
 	}
 
-	if !s.Ks.up && thruster.Playing {
-		thruster.StopLoop()
-	}
-
-	if s.exploded() && thruster.Playing {
+	if !s.Ks.up || s.exploded() {
 		thruster.StopLoop()
 	}
 }

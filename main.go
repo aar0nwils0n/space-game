@@ -37,14 +37,15 @@ func createGameCanvas() *game.Canvas {
 	return &canvas
 }
 
-func startSound() {
+func startSound() audio.Store {
 	store := audio.CreateStore()
 	store.Add("bg", "assets/audio/Papergirl.mp3")
 	store.Files["bg"].LoopFull()
+	return store
 }
 
 func initialize(e dom.Event) {
-	startSound()
+	store := startSound()
 	canvas := createGameCanvas()
 	dom.GetWindow().Document().AddEventListener("keydown", true, canvas.Ship.Ks.HandleKeyDown)
 	dom.GetWindow().Document().AddEventListener("keyup", true, canvas.Ship.Ks.HandleKeyUp)
@@ -70,7 +71,7 @@ func initialize(e dom.Event) {
 	canvas.Initialize()
 
 	interval := setInterval(canvas)
-	handlePlayPause(interval, canvas)
+	handlePlayPause(interval, canvas, &store)
 
 	reset := dom.GetWindow().Document().GetElementByID("reset")
 	reset.AddEventListener("click", true, func(e dom.Event) {
@@ -80,17 +81,35 @@ func initialize(e dom.Event) {
 	})
 }
 
-func handlePlayPause(interval int, canvas *game.Canvas) {
-	pause := dom.GetWindow().Document().GetElementByID("pause")
-	pause.AddEventListener("click", true, func(e dom.Event) {
-		if pause.Class().Contains("pause") {
-			pause.SetAttribute("class", "play")
-			dom.GetWindow().ClearInterval(interval)
+func handlePlayPause(interval int, canvas *game.Canvas, store *audio.Store) {
+	document := dom.GetWindow().Document()
+	pauseEl := document.GetElementByID("pause")
+
+	pauseEl.AddEventListener("click", true, func(e dom.Event) {
+		if pauseEl.Class().Contains("pause") {
+			pause(interval, pauseEl, store)
 		} else {
-			pause.SetAttribute("class", "pause")
+			pauseEl.SetAttribute("class", "pause")
 			interval = setInterval(canvas)
+			store.Files["bg"].Play()
 		}
 	})
+
+	document.AddEventListener("deviceready", true, func(e dom.Event) {
+		document.AddEventListener("pause", true, func(e dom.Event) {
+			pause(interval, pauseEl, store)
+		})
+
+		document.AddEventListener("menubutton", true, func(e dom.Event) {
+			pause(interval, pauseEl, store)
+		})
+	})
+}
+
+func pause(interval int, pauseEl dom.Element, audioStore *audio.Store) {
+	pauseEl.SetAttribute("class", "play")
+	dom.GetWindow().ClearInterval(interval)
+	audioStore.Files["bg"].Pause()
 }
 
 func setInterval(canvas *game.Canvas) int {

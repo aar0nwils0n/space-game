@@ -16,7 +16,7 @@ func TestOutofBounds(t *testing.T) {
 	s.y = 0
 	assert.Equal(s.outOfBounds(), false)
 
-	s.x = 100 * s.Canvas.vh
+	s.x = 100 * s.Canvas.vw
 	s.y = 100 * s.Canvas.vh
 	assert.Equal(s.outOfBounds(), false)
 
@@ -31,14 +31,16 @@ func TestOutofBounds(t *testing.T) {
 	assert.Equal(s.outOfBounds(), true)
 
 	s.y = 0
-	s.x = 100*s.Canvas.vh + 1
+	s.x = 100*s.Canvas.vw + 1
 	assert.Equal(s.outOfBounds(), true)
 
 }
 func TestShipCycle(t *testing.T) {
+	as := createTestAudioStore()
 	assert := assert.New(t)
 	ks := KeyboardState{}
 	ship := Ship{Ks: &ks, acceleration: 0.25}
+	ship.audio = &as
 	ship.x = 0
 	ship.y = 0
 	//It should turn around

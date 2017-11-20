@@ -11,7 +11,6 @@ func TestHandleKeyDownUp(t *testing.T) {
 	leftCode := 37
 	upCode := 38
 	rightCode := 39
-	downCode := 40
 
 	assert := assert.New(t)
 
@@ -28,12 +27,6 @@ func TestHandleKeyDownUp(t *testing.T) {
 	ks.HandleKeyUp(event)
 
 	assert.Equal(ks.up, false)
-
-	keyEvent.KeyCode = downCode
-
-	ks.HandleKeyDown(event)
-
-	assert.Equal(ks.down, true)
 
 	ks.HandleKeyUp(event)
 
